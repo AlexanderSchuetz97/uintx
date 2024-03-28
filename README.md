@@ -27,8 +27,8 @@ This is memory safe but not the fastest.
 
 #### The function: u24::unsafe_add_with_aligned_into_aligned(u24, u32) -> u32
 
-would compile into 1 fetch+1 and, then an add operation, then 1 store. This is faster than the above.
-Keep in mind that this function implicitly transforms the output to an u32.
+would compile into 1 fetch+1 and for the u24 and 1 fetch for the u32, then an add operation, then 1 store. 
+This is faster than the above. Keep in mind that this function implicitly transforms the output to an u32.
 There are variants of this function that output an u24 too or accept 2 u24s as input.
 
 #### Why are these unsafe functions not memory safe?
@@ -49,8 +49,8 @@ not faster when using the unsafe functions.
 If you need signed/other integers consider using the "ux" or "intx" library. 
 
 The main differences are:
-- "ux" uses the next biggest aligned integer to represent the type in memory. (sizeof::<u24> == 4)
-- "intx" does not implement arithmetic operations but (sizeof::<u24> == 3 YAY!)
+- "ux" uses the next biggest aligned integer to represent the type in memory. (sizeof u24 == 4)
+- "intx" does not implement arithmetic operations but (sizeof u24 == 3 YAY!)
 
 ### Motivation:
 This library was developed to assist in dealing with a lot of RGB,BGR, CMYKOG, CMYKOGV,... pixel buffers in esoteric "Pixel" formats where 
