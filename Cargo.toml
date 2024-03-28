@@ -1,0 +1,22 @@
+[package]
+name = "uintx"
+version = "0.0.1"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+authors = ["Alexander Schütz <aschuetz@protonmail.com>"]
+keywords = ["u24", "u40", "u48", "u56", "integer"]
+categories = ["data-structures"]
+description = "Implementation of unaligned unsigned integers with exact size in memory and arithmetic operations"
+readme = "README.md"
+homepage = "https://github.com/AlexanderSchuetz97/uintx"
+
+[lib]
+crate-type = ["rlib"]
+
+[dev-dependencies]
+getrandom = "*"
+
+
+[profile.dev]
+debug = 2
+#opt-level = 3
