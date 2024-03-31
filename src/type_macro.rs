@@ -117,7 +117,7 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn add(self, rhs: Self) -> Self {
-                Self::from_num(self.as_num() + rhs.as_num())
+                Self::from_num_checked(self.as_num() + rhs.as_num())
             }
         }
 
@@ -125,14 +125,14 @@ macro_rules! common_traits_impl {
             type Output = $source;
 
             fn add(self, rhs: $source) -> $source {
-                <$source>::from_num(self.as_num() + rhs.as_num())
+                <$source>::from_num_checked(self.as_num() + rhs.as_num())
             }
         }
 
         impl std::ops::Add<&$source> for &$source {
             type Output = $source;
             fn add(self, rhs: &$source) -> $source {
-                <$source>::from_num(self.as_num() + rhs.as_num())
+                <$source>::from_num_checked(self.as_num() + rhs.as_num())
             }
         }
 
@@ -148,7 +148,7 @@ macro_rules! common_traits_impl {
             type Output = $source;
 
             fn add(self, rhs: &$helper) -> $source {
-                <$source>::from_num(self.as_num() + rhs)
+                <$source>::from_num_checked(self.as_num() + rhs)
             }
         }
 
@@ -156,7 +156,7 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn add(self, rhs: &Self) -> Self {
-                Self::from_num(self.as_num() + rhs.as_num())
+                Self::from_num_checked(self.as_num() + rhs.as_num())
             }
         }
 
@@ -164,7 +164,7 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn add(self, rhs: $helper) -> Self {
-                Self::from_num(self.as_num() + rhs)
+                Self::from_num_checked(self.as_num() + rhs)
             }
         }
 
@@ -172,31 +172,31 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn add(self, rhs: &$helper) -> Self {
-                Self::from_num(self.as_num() + rhs)
+                Self::from_num_checked(self.as_num() + rhs)
             }
         }
 
         impl std::ops::AddAssign for $source {
             fn add_assign(&mut self, rhs: Self) {
-                *self = Self::from_num(self.as_num() + rhs.as_num());
+                *self = Self::from_num_checked(self.as_num() + rhs.as_num());
             }
         }
 
         impl std::ops::AddAssign<&$source> for $source {
             fn add_assign(&mut self, rhs: &Self) {
-                *self = Self::from_num(self.as_num() + rhs.as_num());
+                *self = Self::from_num_checked(self.as_num() + rhs.as_num());
             }
         }
 
         impl std::ops::AddAssign<$helper> for $source {
             fn add_assign(&mut self, rhs: $helper) {
-                *self = Self::from_num(self.as_num() + rhs);
+                *self = Self::from_num_checked(self.as_num() + rhs);
             }
         }
 
         impl std::ops::AddAssign<&$helper> for $source {
             fn add_assign(&mut self, rhs: &$helper) {
-                *self = Self::from_num(self.as_num() + rhs);
+                *self = Self::from_num_checked(self.as_num() + rhs);
             }
         }
 
@@ -314,7 +314,7 @@ macro_rules! common_traits_impl {
             type Output = $source;
 
             fn bitor(self, rhs: $helper) -> $source {
-                <$source>::from_num(self.as_num() | rhs)
+                <$source>::from_num_checked(self.as_num() | rhs)
             }
         }
 
@@ -322,7 +322,7 @@ macro_rules! common_traits_impl {
             type Output = $source;
 
             fn bitor(self, rhs: &$helper) -> $source {
-                <$source>::from_num(self.as_num() | rhs)
+                <$source>::from_num_checked(self.as_num() | rhs)
             }
         }
 
@@ -338,7 +338,7 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn bitor(self, rhs: $helper) -> Self::Output {
-                Self::from_num(self.as_num() | rhs)
+                Self::from_num_checked(self.as_num() | rhs)
             }
         }
 
@@ -346,7 +346,7 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn bitor(self, rhs: &$helper) -> Self::Output {
-                Self::from_num(self.as_num() | rhs)
+                Self::from_num_checked(self.as_num() | rhs)
             }
         }
 
@@ -364,13 +364,13 @@ macro_rules! common_traits_impl {
 
         impl std::ops::BitOrAssign<$helper> for $source {
             fn bitor_assign(&mut self, rhs: $helper) {
-                *self = Self::from_num(self.as_num() | rhs)
+                *self = Self::from_num_checked(self.as_num() | rhs)
             }
         }
 
         impl std::ops::BitOrAssign<&$helper> for $source {
             fn bitor_assign(&mut self, rhs: &$helper) {
-                *self = Self::from_num(self.as_num() | rhs)
+                *self = Self::from_num_checked(self.as_num() | rhs)
             }
         }
 
@@ -401,7 +401,7 @@ macro_rules! common_traits_impl {
             type Output = $source;
 
             fn bitxor(self, rhs: $helper) -> $source {
-                <$source>::from_num(self.as_num() ^ rhs)
+                <$source>::from_num_checked(self.as_num() ^ rhs)
             }
         }
 
@@ -409,7 +409,7 @@ macro_rules! common_traits_impl {
             type Output = $source;
 
             fn bitxor(self, rhs: &$helper) -> $source {
-                <$source>::from_num(self.as_num() ^ rhs)
+                <$source>::from_num_checked(self.as_num() ^ rhs)
             }
         }
 
@@ -425,7 +425,7 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn bitxor(self, rhs: $helper) -> Self::Output {
-                Self::from_num(self.as_num() ^ rhs)
+                Self::from_num_checked(self.as_num() ^ rhs)
             }
         }
 
@@ -433,7 +433,7 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn bitxor(self, rhs: &$helper) -> Self::Output {
-                Self::from_num(self.as_num() ^ rhs)
+                Self::from_num_checked(self.as_num() ^ rhs)
             }
         }
 
@@ -451,13 +451,13 @@ macro_rules! common_traits_impl {
 
         impl std::ops::BitXorAssign<$helper> for $source {
             fn bitxor_assign(&mut self, rhs: $helper) {
-                *self = Self::from_num(self.as_num() ^ rhs)
+                *self = Self::from_num_checked(self.as_num() ^ rhs)
             }
         }
 
         impl std::ops::BitXorAssign<&$helper> for $source {
             fn bitxor_assign(&mut self, rhs: &$helper) {
-                *self = Self::from_num(self.as_num() ^ rhs)
+                *self = Self::from_num_checked(self.as_num() ^ rhs)
             }
         }
 
@@ -552,7 +552,7 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn mul(self, rhs: Self) -> Self {
-                Self::from_num(self.as_num() * rhs.as_num())
+                Self::from_num_checked(self.as_num() * rhs.as_num())
             }
         }
 
@@ -560,14 +560,14 @@ macro_rules! common_traits_impl {
             type Output = $source;
 
             fn mul(self, rhs: $source) -> $source {
-                <$source>::from_num(self.as_num() * rhs.as_num())
+                <$source>::from_num_checked(self.as_num() * rhs.as_num())
             }
         }
 
         impl std::ops::Mul<&$source> for &$source {
             type Output = $source;
             fn mul(self, rhs: &$source) -> $source {
-                <$source>::from_num(self.as_num() * rhs.as_num())
+                <$source>::from_num_checked(self.as_num() * rhs.as_num())
             }
         }
 
@@ -575,7 +575,7 @@ macro_rules! common_traits_impl {
             type Output = $source;
 
             fn mul(self, rhs: $helper) -> $source {
-                <$source>::from_num(self.as_num() * rhs)
+                <$source>::from_num_checked(self.as_num() * rhs)
             }
         }
 
@@ -583,7 +583,7 @@ macro_rules! common_traits_impl {
             type Output = $source;
 
             fn mul(self, rhs: &$helper) -> $source {
-                <$source>::from_num(self.as_num() * rhs)
+                <$source>::from_num_checked(self.as_num() * rhs)
             }
         }
 
@@ -591,7 +591,7 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn mul(self, rhs: &Self) -> Self {
-                Self::from_num(self.as_num() * rhs.as_num())
+                Self::from_num_checked(self.as_num() * rhs.as_num())
             }
         }
 
@@ -599,7 +599,7 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn mul(self, rhs: $helper) -> Self {
-                Self::from_num(self.as_num() * rhs)
+                Self::from_num_checked(self.as_num() * rhs)
             }
         }
 
@@ -607,31 +607,31 @@ macro_rules! common_traits_impl {
             type Output = Self;
 
             fn mul(self, rhs: &$helper) -> Self {
-                Self::from_num(self.as_num() * rhs)
+                Self::from_num_checked(self.as_num() * rhs)
             }
         }
 
         impl std::ops::MulAssign for $source {
             fn mul_assign(&mut self, rhs: Self) {
-                *self = Self::from_num(self.as_num() * rhs.as_num());
+                *self = Self::from_num_checked(self.as_num() * rhs.as_num());
             }
         }
 
         impl std::ops::MulAssign<&$source> for $source {
             fn mul_assign(&mut self, rhs: &Self) {
-                *self = Self::from_num(self.as_num() * rhs.as_num());
+                *self = Self::from_num_checked(self.as_num() * rhs.as_num());
             }
         }
 
         impl std::ops::MulAssign<$helper> for $source {
             fn mul_assign(&mut self, rhs: $helper) {
-                *self = Self::from_num(self.as_num() * rhs);
+                *self = Self::from_num_checked(self.as_num() * rhs);
             }
         }
 
         impl std::ops::MulAssign<&$helper> for $source {
             fn mul_assign(&mut self, rhs: &$helper) {
-                *self = Self::from_num(self.as_num() * rhs);
+                *self = Self::from_num_checked(self.as_num() * rhs);
             }
         }
 
@@ -820,6 +820,12 @@ macro_rules! common_traits_impl {
 #[macro_export]
 macro_rules! common_fn_impl {
     ($source:ty, $helper:ty, $size:literal) => {
+        #[inline(always)]
+        pub(crate) const fn from_num_checked(n: $helper) -> Self {
+            debug_assert!(n <= Self::MAX_VALUE, "overflow");
+            return Self::from_num(n);
+        }
+
         #[inline]
         pub const fn swap_bytes(self) -> Self {
             Self(Self::swap_data_copy(&self.0))
@@ -1473,188 +1479,244 @@ macro_rules! unsafe_math_impl {
     ($source:ty, $helper:ty) => {
         #[cfg(target_endian = "little")]
         #[inline]
-        pub unsafe fn fetch_unsafe(&self) -> $helper {
-            return self.0.as_ptr().cast::<$helper>().read_unaligned();
+        pub unsafe fn fetch_unsafe(data: *const Self) -> $helper {
+            return data.cast::<$helper>().read_unaligned();
         }
 
         #[cfg(target_endian = "big")]
         #[inline]
-        pub unsafe fn fetch_unsafe(&self) -> $helper {
-            //Not optimized for big endian
-            return self.as_num();
+        pub unsafe fn fetch_unsafe(data: *const Self) -> $helper {
+            return data.cast::<$helper>().read_unaligned() >> Self::NUM_BITS_MISSING_FOR_ALIGNMENT;
         }
 
         #[cfg(target_endian = "little")]
         #[inline]
-        pub unsafe fn fetch_unsafe_clamped(&self) -> $helper {
-            return self.0.as_ptr().cast::<$helper>().read_unaligned() & Self::MAX_VALUE;
+        pub unsafe fn fetch_unsafe_clamped(data: *const Self) -> $helper {
+            return data.cast::<$helper>().read_unaligned() & Self::MAX_VALUE;
         }
 
         #[cfg(target_endian = "big")]
         #[inline]
-        pub unsafe fn fetch_unsafe_clamped(&self) -> $helper {
-            //Not optimized for big endian
-            return self.as_num();
+        pub unsafe fn fetch_unsafe_clamped(data: *const Self) -> $helper {
+            return data.cast::<$helper>().read_unaligned() >> Self::NUM_BITS_MISSING_FOR_ALIGNMENT;
         }
 
         #[inline]
-        pub unsafe fn unsafe_add_into_aligned(&self, rhs: &Self) -> $helper {
-            return self.fetch_unsafe_clamped() + rhs.fetch_unsafe_clamped();
+        pub unsafe fn unsafe_add_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) + Self::fetch_unsafe_clamped(rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_add_into_unaligned(&self, rhs: &Self) -> Self {
-            return Self::from_num(self.fetch_unsafe_clamped() + rhs.fetch_unsafe_clamped());
+        pub unsafe fn unsafe_add_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
+            return Self::from_num(
+                Self::fetch_unsafe_clamped(lhs) + Self::fetch_unsafe_clamped(rhs),
+            );
         }
 
         #[inline]
-        pub unsafe fn unsafe_add_with_aligned_into_unaligned(&self, rhs: $helper) -> Self {
-            return Self::from_num(self.fetch_unsafe_clamped() + rhs);
+        pub unsafe fn unsafe_add_with_aligned_into_unaligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> Self {
+            return Self::from_num(Self::fetch_unsafe_clamped(lhs) + rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_add_with_aligned_into_aligned(&self, rhs: $helper) -> $helper {
-            return self.fetch_unsafe_clamped() + rhs;
+        pub unsafe fn unsafe_add_with_aligned_into_aligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) + rhs;
         }
 
         #[inline]
-        pub unsafe fn unsafe_sub_into_aligned(&self, rhs: &Self) -> $helper {
-            return self.fetch_unsafe_clamped() - rhs.fetch_unsafe_clamped();
+        pub unsafe fn unsafe_sub_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) - Self::fetch_unsafe_clamped(rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_sub_with_aligned_into_aligned(&self, rhs: $helper) -> $helper {
-            return self.fetch_unsafe_clamped() - rhs;
+        pub unsafe fn unsafe_sub_with_aligned_into_aligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) - rhs;
         }
 
         #[inline]
-        pub unsafe fn unsafe_sub_into_unaligned(&self, rhs: &Self) -> Self {
-            return Self::from_num(self.fetch_unsafe_clamped() - rhs.fetch_unsafe_clamped());
+        pub unsafe fn unsafe_sub_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
+            return Self::from_num(
+                Self::fetch_unsafe_clamped(lhs) - Self::fetch_unsafe_clamped(rhs),
+            );
         }
 
         #[inline]
-        pub unsafe fn unsafe_sub_with_aligned_into_unaligned(&self, rhs: $helper) -> Self {
-            return Self::from_num(self.fetch_unsafe_clamped() - rhs);
+        pub unsafe fn unsafe_sub_with_aligned_into_unaligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> Self {
+            return Self::from_num(Self::fetch_unsafe_clamped(lhs) - rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_mul_into_aligned(&self, rhs: &Self) -> $helper {
-            return self.fetch_unsafe_clamped() * rhs.fetch_unsafe_clamped();
+        pub unsafe fn unsafe_mul_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) * Self::fetch_unsafe_clamped(rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_mul_with_aligned_into_aligned(&self, rhs: $helper) -> $helper {
-            return self.fetch_unsafe_clamped() * rhs;
+        pub unsafe fn unsafe_mul_with_aligned_into_aligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) * rhs;
         }
 
         #[inline]
-        pub unsafe fn unsafe_mul_into_unaligned(&self, rhs: &Self) -> Self {
-            return Self::from_num(self.fetch_unsafe_clamped() * rhs.fetch_unsafe_clamped());
+        pub unsafe fn unsafe_mul_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
+            return Self::from_num(
+                Self::fetch_unsafe_clamped(lhs) * Self::fetch_unsafe_clamped(rhs),
+            );
         }
 
         #[inline]
-        pub unsafe fn unsafe_mul_with_aligned_into_unaligned(&self, rhs: $helper) -> Self {
-            return Self::from_num(self.fetch_unsafe_clamped() * rhs);
+        pub unsafe fn unsafe_mul_with_aligned_into_unaligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> Self {
+            return Self::from_num(Self::fetch_unsafe_clamped(lhs) * rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_div_into_aligned(&self, rhs: &Self) -> $helper {
-            return self.fetch_unsafe_clamped() / rhs.fetch_unsafe_clamped();
+        pub unsafe fn unsafe_div_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) / Self::fetch_unsafe_clamped(rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_div_with_aligned_into_aligned(&self, rhs: $helper) -> $helper {
-            return self.fetch_unsafe_clamped() / rhs;
+        pub unsafe fn unsafe_div_with_aligned_into_aligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) / rhs;
         }
 
         #[inline]
-        pub unsafe fn unsafe_div_into_unaligned(&self, rhs: &Self) -> Self {
-            return Self::from_num(self.fetch_unsafe_clamped() / rhs.fetch_unsafe_clamped());
+        pub unsafe fn unsafe_div_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
+            return Self::from_num(
+                Self::fetch_unsafe_clamped(lhs) / Self::fetch_unsafe_clamped(rhs),
+            );
         }
 
         #[inline]
-        pub unsafe fn unsafe_div_with_aligned_into_unaligned(&self, rhs: $helper) -> Self {
-            return Self::from_num(self.fetch_unsafe_clamped() / rhs);
+        pub unsafe fn unsafe_div_with_aligned_into_unaligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> Self {
+            return Self::from_num(Self::fetch_unsafe_clamped(lhs) / rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_rem_into_aligned(&self, rhs: &Self) -> $helper {
-            return self.fetch_unsafe_clamped() % rhs.fetch_unsafe_clamped();
+        pub unsafe fn unsafe_rem_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) % Self::fetch_unsafe_clamped(rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_rem_with_aligned_into_aligned(&self, rhs: $helper) -> $helper {
-            return self.fetch_unsafe_clamped() % rhs;
+        pub unsafe fn unsafe_rem_with_aligned_into_aligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) % rhs;
         }
 
         #[inline]
-        pub unsafe fn unsafe_rem_into_unaligned(&self, rhs: &Self) -> Self {
-            return Self::from_num(self.fetch_unsafe_clamped() % rhs.fetch_unsafe_clamped());
+        pub unsafe fn unsafe_rem_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
+            return Self::from_num(
+                Self::fetch_unsafe_clamped(lhs) % Self::fetch_unsafe_clamped(rhs),
+            );
         }
 
         #[inline]
-        pub unsafe fn unsafe_rem_with_aligned_into_unaligned(&self, rhs: $helper) -> Self {
-            return Self::from_num(self.fetch_unsafe_clamped() % rhs);
+        pub unsafe fn unsafe_rem_with_aligned_into_unaligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> Self {
+            return Self::from_num(Self::fetch_unsafe_clamped(lhs) % rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_or_into_aligned(&self, rhs: &Self) -> $helper {
-            return (self.fetch_unsafe() | rhs.fetch_unsafe()) & Self::MAX_VALUE;
+        pub unsafe fn unsafe_or_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
+            return (Self::fetch_unsafe(lhs) | Self::fetch_unsafe(rhs)) & Self::MAX_VALUE;
         }
 
         #[inline]
-        pub unsafe fn unsafe_or_with_aligned_into_aligned(&self, rhs: $helper) -> $helper {
-            return self.fetch_unsafe_clamped() | rhs;
+        pub unsafe fn unsafe_or_with_aligned_into_aligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) | rhs;
         }
 
         #[inline]
-        pub unsafe fn unsafe_or_into_unaligned(&self, rhs: &Self) -> Self {
-            return Self::from_num(self.fetch_unsafe() | rhs.fetch_unsafe());
+        pub unsafe fn unsafe_or_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
+            return Self::from_num(Self::fetch_unsafe(lhs) | Self::fetch_unsafe(rhs));
         }
 
         #[inline]
-        pub unsafe fn unsafe_or_with_aligned_into_unaligned(&self, rhs: $helper) -> Self {
-            return Self::from_num(self.fetch_unsafe() | rhs);
+        pub unsafe fn unsafe_or_with_aligned_into_unaligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> Self {
+            return Self::from_num(Self::fetch_unsafe(lhs) | rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_and_into_aligned(&self, rhs: &Self) -> $helper {
-            return (self.fetch_unsafe() & rhs.fetch_unsafe()) & Self::MAX_VALUE;
+        pub unsafe fn unsafe_and_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
+            return (Self::fetch_unsafe(lhs) & Self::fetch_unsafe(rhs)) & Self::MAX_VALUE;
         }
 
         #[inline]
-        pub unsafe fn unsafe_and_with_aligned_into_aligned(&self, rhs: $helper) -> $helper {
-            return self.fetch_unsafe() & rhs;
+        pub unsafe fn unsafe_and_with_aligned_into_aligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> $helper {
+            return Self::fetch_unsafe(lhs) & rhs;
         }
 
         #[inline]
-        pub unsafe fn unsafe_and_into_unaligned(&self, rhs: &Self) -> Self {
-            return Self::from_num(self.fetch_unsafe() & rhs.fetch_unsafe());
+        pub unsafe fn unsafe_and_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
+            return Self::from_num(Self::fetch_unsafe(lhs) & Self::fetch_unsafe(rhs));
         }
 
         #[inline]
-        pub unsafe fn unsafe_and_with_aligned_into_unaligned(&self, rhs: $helper) -> Self {
-            return Self::from_num(self.fetch_unsafe() & rhs);
+        pub unsafe fn unsafe_and_with_aligned_into_unaligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> Self {
+            return Self::from_num(Self::fetch_unsafe(lhs) & rhs);
         }
 
         #[inline]
-        pub unsafe fn unsafe_xor_into_aligned(&self, rhs: &Self) -> $helper {
-            return (self.fetch_unsafe() ^ rhs.fetch_unsafe()) & Self::MAX_VALUE;
+        pub unsafe fn unsafe_xor_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
+            return (Self::fetch_unsafe(lhs) ^ Self::fetch_unsafe(rhs)) & Self::MAX_VALUE;
         }
 
         #[inline]
-        pub unsafe fn unsafe_xor_with_aligned_into_aligned(&self, rhs: $helper) -> $helper {
-            return self.fetch_unsafe_clamped() ^ rhs;
+        pub unsafe fn unsafe_xor_with_aligned_into_aligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> $helper {
+            return Self::fetch_unsafe_clamped(lhs) ^ rhs;
         }
 
         #[inline]
-        pub unsafe fn unsafe_xor_into_unaligned(&self, rhs: &Self) -> Self {
-            return Self::from_num(self.fetch_unsafe() ^ rhs.fetch_unsafe());
+        pub unsafe fn unsafe_xor_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
+            return Self::from_num(Self::fetch_unsafe(lhs) ^ Self::fetch_unsafe(rhs));
         }
 
         #[inline]
-        pub unsafe fn unsafe_xor_with_aligned_into_unaligned(&self, rhs: $helper) -> Self {
-            return Self::from_num(self.fetch_unsafe() ^ rhs);
+        pub unsafe fn unsafe_xor_with_aligned_into_unaligned(
+            lhs: *const Self,
+            rhs: $helper,
+        ) -> Self {
+            return Self::from_num(Self::fetch_unsafe(lhs) ^ rhs);
         }
     };
 }
@@ -2274,8 +2336,6 @@ macro_rules! sh_impl {
 #[macro_export]
 macro_rules! type_impl {
     ($source:ty, $helper:ty, $size:literal) => {
-
-
         #[allow(dead_code)]
         impl $source {
             pub const MAX: $source = Self([0xFFu8; $size]);

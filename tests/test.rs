@@ -12,6 +12,8 @@ use uintx::u80;
 use uintx::u88;
 use uintx::u96;
 
+const TEST_SET_SIZE: usize = if cfg!(miri) { 0xF } else { 0xFFFF };
+
 macro_rules! test_type {
     ($under_test:ty, $tt:ident) => {
         struct $tt {
@@ -28,17 +30,21 @@ macro_rules! test_type {
                     Self::add_sub(nr);
                     Self::mul_div(nr);
                 }
+                Self::unsafe_fetch(&tdata.random_numbers);
             }
 
             fn make_test_data() -> $tt {
                 let mut dta = Vec::new();
-                for _ in 0..0xFFFF {
+                for _ in 0..TEST_SET_SIZE {
                     let mut inner: Vec<u8> = vec![0; size_of::<$under_test>()];
                     getrandom(inner.as_mut_slice()).expect("GETRANDOM");
                     let copy: $under_test =
                         unsafe { (*inner.as_ptr().cast::<$under_test>()).clone() };
                     dta.push(copy);
                 }
+                dta.push(<$under_test>::MAX);
+                dta.push(<$under_test>::MIN);
+
                 return $tt {
                     random_numbers: dta,
                 };
@@ -202,6 +208,137 @@ macro_rules! test_type {
                     );
                     assert_eq!(z, bnum ^ base_mask, "{} - {}", bnum, base_mask);
                     assert_eq!(z2, bnum ^ base_mask, "{} - {}", bnum, base_mask);
+                }
+            }
+
+            #[cfg(not(feature = "unsafe_fetch"))]
+            fn unsafe_fetch(_: &Vec<$under_test>) {}
+
+            #[cfg(feature = "unsafe_fetch")]
+            fn unsafe_fetch(data: &Vec<$under_test>) {
+                let mut clone = data.clone();
+                clone.push(<$under_test>::default());
+                let mut v: Vec<$under_test> = Vec::new();
+                v.push(<$under_test>::MAX);
+                v.push(<$under_test>::from(69));
+                v.push(<$under_test>::MAX);
+
+                let clone_ptr = clone.as_ptr();
+                let mid_ptr = unsafe { v.as_ptr().add(1) };
+
+                for i in 0..data.len() {
+                    let the_ptr = unsafe { clone_ptr.add(i) };
+                    let cp = unsafe { <$under_test>::fetch_unsafe(the_ptr) };
+                    let cp2 = unsafe { <$under_test>::fetch_unsafe_clamped(the_ptr) };
+                    assert_eq!(data[i].as_num(), cp2);
+                    assert_eq!(cp & <$under_test>::MAX_VALUE, cp2);
+
+                    if data[i].as_num() + 69 <= <$under_test>::MAX_VALUE {
+                        let cp = unsafe {
+                            <$under_test>::unsafe_add_with_aligned_into_unaligned(the_ptr, 69)
+                        };
+                        assert_eq!(cp, data[i] + 69);
+                        let cp =
+                            unsafe { <$under_test>::unsafe_add_into_unaligned(the_ptr, mid_ptr) };
+                        assert_eq!(cp, data[i] + 69);
+                    }
+                    let cp = unsafe { <$under_test>::unsafe_add_into_aligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i].as_num() + 69);
+                    let cp =
+                        unsafe { <$under_test>::unsafe_add_with_aligned_into_aligned(the_ptr, 69) };
+                    assert_eq!(cp, data[i].as_num() + 69);
+
+                    if data[i].as_num() > 69 {
+                        let cp = unsafe {
+                            <$under_test>::unsafe_sub_with_aligned_into_unaligned(the_ptr, 69)
+                        };
+                        assert_eq!(cp, data[i] - 69);
+                        let cp =
+                            unsafe { <$under_test>::unsafe_sub_into_unaligned(the_ptr, mid_ptr) };
+                        assert_eq!(cp, data[i] - 69);
+                        let cp =
+                            unsafe { <$under_test>::unsafe_sub_into_aligned(the_ptr, mid_ptr) };
+                        assert_eq!(cp, data[i].as_num() - 69);
+                        let cp = unsafe {
+                            <$under_test>::unsafe_sub_with_aligned_into_aligned(the_ptr, 69)
+                        };
+                        assert_eq!(cp, data[i].as_num() - 69);
+                    }
+
+                    if data[i].as_num() * 69 <= <$under_test>::MAX_VALUE {
+                        let cp = unsafe {
+                            <$under_test>::unsafe_mul_with_aligned_into_unaligned(the_ptr, 69)
+                        };
+                        assert_eq!(cp, data[i] * 69);
+                        let cp =
+                            unsafe { <$under_test>::unsafe_mul_into_unaligned(the_ptr, mid_ptr) };
+                        assert_eq!(cp, data[i] * 69);
+                    }
+                    let cp = unsafe { <$under_test>::unsafe_mul_into_aligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i].as_num() * 69);
+                    let cp =
+                        unsafe { <$under_test>::unsafe_mul_with_aligned_into_aligned(the_ptr, 69) };
+                    assert_eq!(cp, data[i].as_num() * 69);
+
+                    let cp = unsafe {
+                        <$under_test>::unsafe_div_with_aligned_into_unaligned(the_ptr, 69)
+                    };
+                    assert_eq!(cp, data[i] / 69);
+                    let cp = unsafe { <$under_test>::unsafe_div_into_unaligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i] / 69);
+                    let cp = unsafe { <$under_test>::unsafe_div_into_aligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i].as_num() / 69);
+                    let cp =
+                        unsafe { <$under_test>::unsafe_div_with_aligned_into_aligned(the_ptr, 69) };
+                    assert_eq!(cp, data[i].as_num() / 69);
+
+                    let cp = unsafe {
+                        <$under_test>::unsafe_rem_with_aligned_into_unaligned(the_ptr, 69)
+                    };
+                    assert_eq!(cp, data[i] % 69, "{}", data[i]);
+                    let cp = unsafe { <$under_test>::unsafe_rem_into_unaligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i] % 69);
+                    let cp = unsafe { <$under_test>::unsafe_rem_into_aligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i].as_num() % 69);
+                    let cp =
+                        unsafe { <$under_test>::unsafe_rem_with_aligned_into_aligned(the_ptr, 69) };
+                    assert_eq!(cp, data[i].as_num() % 69);
+
+                    let cp = unsafe {
+                        <$under_test>::unsafe_and_with_aligned_into_unaligned(the_ptr, 69)
+                    };
+                    assert_eq!(cp, data[i] & 69, "{}", data[i]);
+                    let cp = unsafe { <$under_test>::unsafe_and_into_unaligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i] & 69);
+                    let cp = unsafe { <$under_test>::unsafe_and_into_aligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i].as_num() & 69);
+                    let cp =
+                        unsafe { <$under_test>::unsafe_and_with_aligned_into_aligned(the_ptr, 69) };
+                    assert_eq!(cp, data[i].as_num() & 69);
+
+                    let cp = unsafe {
+                        <$under_test>::unsafe_or_with_aligned_into_unaligned(the_ptr, 69)
+                    };
+                    assert_eq!(cp, data[i] | 69, "{}", data[i]);
+                    let cp = unsafe { <$under_test>::unsafe_or_into_unaligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i] | 69);
+                    let cp = unsafe { <$under_test>::unsafe_or_into_aligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i].as_num() | 69);
+                    let cp =
+                        unsafe { <$under_test>::unsafe_or_with_aligned_into_aligned(the_ptr, 69) };
+                    assert_eq!(cp, data[i].as_num() | 69);
+
+                    let cp = unsafe {
+                        <$under_test>::unsafe_xor_with_aligned_into_unaligned(the_ptr, 69)
+                    };
+                    assert_eq!(cp, data[i] ^ 69, "{}", data[i]);
+                    let cp = unsafe { <$under_test>::unsafe_xor_into_unaligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i] ^ 69);
+                    let cp = unsafe { <$under_test>::unsafe_xor_into_aligned(the_ptr, mid_ptr) };
+                    assert_eq!(cp, data[i].as_num() ^ 69);
+                    let cp =
+                        unsafe { <$under_test>::unsafe_xor_with_aligned_into_aligned(the_ptr, 69) };
+                    assert_eq!(cp, data[i].as_num() ^ 69);
                 }
             }
 
@@ -397,10 +534,7 @@ macro_rules! test_type {
 
 #[test]
 fn manual() {
-    let num = u24::from(1761254);
-    let x = num * 3;
-    let y = num / 3;
-    println!("{} - {} - {} - {}", num, x, y, y * 9);
+    let _ = U24T::make_test_data();
 }
 
 test_type!(u24, U24T);
@@ -468,4 +602,3 @@ test_type!(u120, U120T);
 fn test_u120() {
     U120T::run();
 }
-

@@ -20,4 +20,9 @@ cargo build --features ux_support
 cargo build --features intx_support
 cargo build --features unsafe_fetch
 cargo clean
+cargo +nightly miri test --features all
+cargo clean
 cargo test --features all
+cargo test
+cargo test --release --features all
+cargo test --release

@@ -30,5 +30,5 @@ getrandom = "0.2.12"
 
 
 [profile.dev]
-debug = 2
-opt-level = 3
+#debug = 2
+#opt-level = 3
