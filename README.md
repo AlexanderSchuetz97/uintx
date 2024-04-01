@@ -92,27 +92,3 @@ This library was developed to assist in dealing with a lot of RGB,BGR, CMYKOG, C
 pixel buffers in esoteric "Pixel" formats where arithmetic operations have 
 to be performed before the pixel represents an actual valid value. 
 Doing this with many &| and shift operations leads to very unreadable code.
-
-### Future work:
-#### Larger numbers
-I will probably have to implement integers larger than u128 sometime in the future, 
-because 10 channel 16 bit per channel pixels (CMYKOGV+W&V+Alpha) are a thing.
-This would require up to u160 to properly handle.
-
-##### Signed numbers
-I may also implement sign extender functionality to convert from u24 -> i24 -> i32.
-
-Currently, conversions from u24 to i32 are implemented like this: u24 -> u32 -> i32. 
-(its impossible to get a negative i32 from an u24)
-
-But this is not needed for my purposes. So I may end up not doing it. 
-Plus you can already sort of do this if you use intx as an intermediary: 
-u24 -> intx:I24 -> i32 already works.
-
-#### Splitting channels
-As mentioned this library was developed for pixel processing. It would be nice
-to have a feature to split some of those integers into its channels.
-For example u48 can be used to represent 16 Bit RBG so a function to yield a &[u16; 3] would be very nice.
-The same applies to a function that yields a &[f16; 3].
-Since there are many combinations possible and needed, 
-I have decided to postpone implementing this for later.

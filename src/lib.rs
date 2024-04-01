@@ -1,11 +1,18 @@
 mod type_macro;
 
+use crate::type_macro::{*};
+
+
 #[derive(Copy, Clone)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u24(pub(crate) [u8; 3]);
 
 impl u24 {
+
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "big")]
     #[inline]
     pub const fn as_num(self) -> u32 {
@@ -13,6 +20,9 @@ impl u24 {
         u32::from_ne_bytes([0, a, b, c])
     }
 
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "little")]
     #[inline]
     pub const fn as_num(self) -> u32 {
@@ -44,6 +54,7 @@ impl u24 {
 
 
 }
+
 type_impl!(u24, u32, 3);
 type_conversion!(u40, u32, u24);
 type_conversion!(u48, u32, u24);
@@ -62,6 +73,9 @@ type_conversion!(u120, u32, u24);
 pub struct u40(pub(crate) [u8; 5]);
 
 impl u40 {
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "big")]
     #[inline]
     pub const fn as_num(self) -> u64 {
@@ -69,6 +83,9 @@ impl u40 {
         u64::from_ne_bytes([0,0,0, a, b, c, d, e])
     }
 
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "little")]
     #[inline]
     pub const fn as_num(self) -> u64 {
@@ -116,6 +133,10 @@ type_conversion!(u120, u64, u40);
 pub struct u48(pub(crate) [u8; 6]);
 
 impl u48 {
+
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "big")]
     #[inline]
     pub const fn as_num(self) -> u64 {
@@ -123,6 +144,9 @@ impl u48 {
         u64::from_ne_bytes([0,0, a, b, c, d, e, f])
     }
 
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "little")]
     #[inline]
     pub const fn as_num(self) -> u64 {
@@ -170,6 +194,9 @@ type_conversion!(u120, u64, u48);
 pub struct u56(pub(crate) [u8; 7]);
 
 impl u56 {
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "big")]
     #[inline]
     pub const fn as_num(self) -> u64 {
@@ -177,6 +204,9 @@ impl u56 {
         u64::from_ne_bytes([0,a, b, c, d, e, f, g])
     }
 
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "little")]
     #[inline]
     pub const fn as_num(self) -> u64 {
@@ -224,6 +254,9 @@ type_conversion!(u120, u64, u56);
 pub struct u72(pub(crate) [u8; 9]);
 
 impl u72 {
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "big")]
     #[inline]
     pub const fn as_num(self) -> u128 {
@@ -231,6 +264,9 @@ impl u72 {
         u128::from_ne_bytes([0,0,0,0,0,0,0, a, b, c, d, e, f, g, h, i])
     }
 
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "little")]
     #[inline]
     pub const fn as_num(self) -> u128 {
@@ -278,12 +314,18 @@ type_conversion!(u120, u128, u72);
 pub struct u80(pub(crate) [u8; 10]);
 
 impl u80 {
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "big")]
     #[inline]
     pub const fn as_num(self) -> u128 {
         let u80([a, b, c, d, e, f, g, h, i, j]) = self;
         u128::from_ne_bytes([0,0,0,0,0,0,a, b, c, d, e, f, g, h, i, j])
     }
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
 
     #[cfg(target_endian = "little")]
     #[inline]
@@ -332,12 +374,18 @@ type_conversion!(u120, u128, u80);
 pub struct u88(pub(crate) [u8; 11]);
 
 impl u88 {
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "big")]
     #[inline]
     pub const fn as_num(self) -> u128 {
         let u88([a, b, c, d, e, f, g, h, i, j, k]) = self;
         u128::from_ne_bytes([0,0,0,0,0,a, b, c, d, e, f, g, h, i, j, k])
     }
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
 
     #[cfg(target_endian = "little")]
     #[inline]
@@ -386,6 +434,9 @@ type_conversion!(u120, u128, u88);
 pub struct u96(pub(crate) [u8; 12]);
 
 impl u96 {
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "big")]
     #[inline]
     pub const fn as_num(self) -> u128 {
@@ -393,6 +444,9 @@ impl u96 {
         u128::from_ne_bytes([0,0,0,0,a, b, c, d, e, f, g, h, i, j, k, l])
     }
 
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "little")]
     #[inline]
     pub const fn as_num(self) -> u128 {
@@ -440,6 +494,9 @@ type_conversion!(u120, u128, u96);
 pub struct u104(pub(crate) [u8; 13]);
 
 impl u104 {
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "big")]
     #[inline]
     pub const fn as_num(self) -> u128 {
@@ -447,6 +504,9 @@ impl u104 {
         u128::from_ne_bytes([0,0,0,a, b, c, d, e, f, g, h, i, j, k, l, m])
     }
 
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "little")]
     #[inline]
     pub const fn as_num(self) -> u128 {
@@ -494,12 +554,18 @@ type_conversion!(u120, u128, u104);
 pub struct u112(pub(crate) [u8; 14]);
 
 impl u112 {
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "big")]
     #[inline]
     pub const fn as_num(self) -> u128 {
         let u112([a, b, c, d, e, f, g, h, i, j, k, l, m, n]) = self;
         u128::from_ne_bytes([0,0, a, b, c, d, e, f, g, h, i, j, k, l, m, n])
     }
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
 
     #[cfg(target_endian = "little")]
     #[inline]
@@ -548,6 +614,9 @@ type_conversion!(u120, u128, u112);
 pub struct u120(pub(crate) [u8; 15]);
 
 impl u120 {
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "big")]
     #[inline]
     pub const fn as_num(self) -> u128 {
@@ -555,6 +624,9 @@ impl u120 {
         u128::from_ne_bytes([0, a, b, c, d, e, f, g, h, i, j, k, l, m, n])
     }
 
+    ///
+    /// Unwraps the type into the next largest aligned type.
+    ///
     #[cfg(target_endian = "little")]
     #[inline]
     pub const fn as_num(self) -> u128 {

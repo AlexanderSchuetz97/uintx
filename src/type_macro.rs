@@ -1,4 +1,4 @@
-#[macro_export]
+#[doc(hidden)]
 macro_rules! type_conversion {
     ($from:ty, $intermediary:ty, $to:ty) => {
         impl From<$from> for $to {
@@ -17,7 +17,8 @@ macro_rules! type_conversion {
     };
 }
 
-#[macro_export]
+
+#[doc(hidden)]
 macro_rules! common_traits_impl {
     ($source:ty, $helper:ty, $size:literal) => {
         impl Default for $source {
@@ -817,7 +818,8 @@ macro_rules! common_traits_impl {
     };
 }
 
-#[macro_export]
+
+#[doc(hidden)]
 macro_rules! common_fn_impl {
     ($source:ty, $helper:ty, $size:literal) => {
         #[inline(always)]
@@ -826,187 +828,298 @@ macro_rules! common_fn_impl {
             return Self::from_num(n);
         }
 
+        ///
+        /// Swaps the byte order of the number
+        ///
         #[inline]
         pub const fn swap_bytes(self) -> Self {
             Self(Self::swap_data_copy(&self.0))
         }
 
+        ///
+        /// Returns a reference to the inner array that represents this type.
+        /// The order of bytes in the array is the native byte order.
+        ///
         #[inline]
         pub fn inner_ref(&self) -> &[u8; $size] {
             &self.0
         }
 
+        ///
+        /// Returns a mutable reference to the inner array that represents this type.
+        /// The order of bytes in the array is the native byte order.
+        ///
         #[inline]
         pub fn inner_ref_mut(&mut self) -> &mut [u8; $size] {
             &mut self.0
         }
 
+        ///
+        /// Parses a byte array into the number.
+        /// This fn assumes that the bytes are in little endian byte order
+        ///
         #[cfg(target_endian = "little")]
         #[inline]
         pub const fn from_le_bytes(data: [u8; $size]) -> Self {
             return Self(data);
         }
 
+        ///
+        /// Parses a byte array into the number.
+        /// This fn assumes that the bytes are in little endian byte order
+        ///
         #[cfg(target_endian = "big")]
         #[inline]
         pub const fn from_le_bytes(data: [u8; $size]) -> Self {
             return Self(Self::swap_data_copy(&data));
         }
 
+        ///
+        /// Parses a byte array into the number.
+        /// This fn assumes that the bytes are in big endian byte order
+        ///
         #[cfg(target_endian = "little")]
         #[inline]
         pub const fn from_be_bytes(data: [u8; $size]) -> Self {
             return Self(Self::swap_data_copy(&data));
         }
 
+        ///
+        /// Parses a byte array into the number.
+        /// This fn assumes that the bytes are in big endian byte order
+        ///
         #[cfg(target_endian = "big")]
         #[inline]
         pub const fn from_be_bytes(data: [u8; $size]) -> Self {
             return Self(data);
         }
 
+        ///
+        /// Parses a byte array into the number.
+        /// This fn assumes that the bytes are in native endian byte order
+        ///
         #[inline]
         pub const fn from_ne_bytes(data: [u8; $size]) -> Self {
             return Self(data);
         }
 
+        ///
+        /// Unwraps the type into a u8 array in native endian byte order.
+        ///
         #[inline]
         pub const fn to_ne_bytes(self) -> [u8; $size] {
             return self.0;
         }
 
+        ///
+        /// Unwraps the type into a u8 array in little endian byte order.
+        ///
         #[cfg(target_endian = "little")]
         #[inline]
         pub const fn to_le_bytes(self) -> [u8; $size] {
             return self.0;
         }
 
+        ///
+        /// Unwraps the type into a u8 array in little endian byte order.
+        ///
         #[cfg(target_endian = "big")]
         #[inline]
         pub const fn to_le_bytes(self) -> [u8; $size] {
             return Self::swap_data_copy(&self.0);
         }
 
+        ///
+        /// Unwraps the type into a u8 array in big endian byte order.
+        ///
         #[cfg(target_endian = "little")]
         #[inline]
         pub const fn to_be_bytes(self) -> [u8; $size] {
             return Self::swap_data_copy(&self.0);
         }
 
+        ///
+        /// Unwraps the type into a u8 array in big endian byte order.
+        ///
         #[cfg(target_endian = "big")]
         #[inline]
         pub const fn to_be_bytes(self) -> [u8; $size] {
             return self.0;
         }
 
+        ///
+        /// Noop on little endian systems. Calls swap_bytes on big endian systems.
+        ///
         #[cfg(target_endian = "little")]
         #[inline]
         pub const fn to_le(self) -> Self {
             self
         }
 
+        ///
+        /// Noop on little endian systems. Calls swap_bytes on big endian systems.
+        ///
         #[cfg(target_endian = "big")]
         #[inline]
         pub const fn to_le(self) -> Self {
             return self.swap_bytes();
         }
 
+        ///
+        /// Noop on big endian systems. Calls swap_bytes on little endian systems.
+        ///
         #[cfg(target_endian = "little")]
         #[inline]
         pub const fn to_be(self) -> Self {
             return self.swap_bytes();
         }
 
+        ///
+        /// Noop on big endian systems. Calls swap_bytes on little endian systems.
+        ///
         #[cfg(target_endian = "big")]
         #[inline]
         pub const fn to_be(self) -> Self {
             self
         }
 
+        ///
+        /// Noop on big endian systems. Calls swap_bytes on little endian systems.
+        ///
         #[cfg(target_endian = "little")]
         #[inline]
         pub const fn from_be(x: Self) -> Self {
             x.swap_bytes()
         }
 
+        ///
+        /// Noop on big endian systems. Calls swap_bytes on little endian systems.
+        ///
         #[cfg(target_endian = "big")]
         #[inline]
         pub const fn from_be(x: Self) -> Self {
             x
         }
 
+        ///
+        /// Noop on little endian systems. Calls swap_bytes on big endian systems.
+        ///
         #[cfg(target_endian = "little")]
         #[inline]
         pub const fn from_le(x: Self) -> Self {
             x
         }
 
+        ///
+        /// Noop on little endian systems. Calls swap_bytes on big endian systems.
+        ///
         #[cfg(target_endian = "big")]
         #[inline]
         pub const fn from_le(x: Self) -> Self {
             x.swap_bytes()
         }
 
+        ///
+        /// shifts the number to the right.
+        ///
         #[inline]
         pub const fn shr(self, rhs: u32) -> Self {
+            debug_assert!(rhs <= Self::NUM_BITS as u32);
             Self::from_num(self.as_num() >> rhs)
         }
 
+        ///
+        /// shifts the number to the left.
+        ///
         #[inline]
         pub const fn shl(self, rhs: u32) -> Self {
+            debug_assert!(rhs <= Self::NUM_BITS as u32);
             Self::from_num(self.as_num() << rhs)
         }
 
+        ///
+        /// normal subtraction - operation.
+        ///
         #[inline]
         pub const fn sub(self, rhs: Self) -> Self {
             Self::from_num(self.as_num() - rhs.as_num())
         }
 
+        ///
+        /// normal multiplication * operation.
+        ///
         #[inline]
         pub const fn mul(self, rhs: Self) -> Self {
-            Self::from_num(self.as_num() * rhs.as_num())
+            Self::from_num_checked(self.as_num() * rhs.as_num())
         }
 
+        ///
+        /// equals == operation
+        ///
         #[inline]
         pub const fn eq(&self, other: &Self) -> bool {
             return self.as_num() == other.as_num();
         }
 
+        ///
+        /// greater > operation
+        ///
         #[inline]
         pub const fn gt(&self, other: &Self) -> bool {
             return self.as_num() > other.as_num();
         }
 
+        ///
+        /// greater or equal >= operation
+        ///
         #[inline]
         pub const fn ge(&self, other: &Self) -> bool {
             return self.as_num() >= other.as_num();
         }
 
+        ///
+        /// lesser < operation
+        ///
         #[inline]
         pub const fn lt(&self, other: &Self) -> bool {
             return self.as_num() < other.as_num();
         }
 
+        ///
+        /// lesser or equal <= operation
+        ///
         #[inline]
         pub const fn le(&self, other: &Self) -> bool {
             return self.as_num() <= other.as_num();
         }
 
+        ///
+        /// Normal add + operation
+        ///
         #[inline]
         pub const fn add(self, rhs: Self) -> Self {
-            Self::from_num(self.as_num() + rhs.as_num())
+            Self::from_num_checked(self.as_num() + rhs.as_num())
         }
 
+        ///
+        /// Normal rem % operation
+        ///
         #[inline]
         pub const fn rem(self, rhs: Self) -> Self {
             Self::from_num(self.as_num() % rhs.as_num())
         }
 
+        ///
+        /// Normal division / operation
+        ///
         #[inline]
         pub const fn div(self, rhs: Self) -> Self {
             Self::from_num(self.as_num() / rhs.as_num())
         }
 
+        ///
+        /// Parses a string returning a error if the number cannot be parsed or is too large for the type.
+        ///
         #[inline]
         pub fn from_str_radix(src: &str, radix: u32) -> Result<Self, std::num::ParseIntError> {
             let r = <$helper>::from_str_radix(src, radix)?;
@@ -1018,6 +1131,10 @@ macro_rules! common_fn_impl {
 
             return Ok(Self::from_num(r));
         }
+
+        ///
+        /// Rotates the number to the right
+        ///
         #[inline]
         pub const fn rotate_right(self, n: u32) -> Self {
             let nsz = n as usize % Self::NUM_BITS;
@@ -1028,6 +1145,9 @@ macro_rules! common_fn_impl {
             return Self::from_num(assembled);
         }
 
+        ///
+        /// Rotates the number to the left
+        ///
         #[inline]
         pub const fn rotate_left(self, n: u32) -> Self {
             let nsz = n as usize % Self::NUM_BITS;
@@ -1038,21 +1158,33 @@ macro_rules! common_fn_impl {
             return Self::from_num(assembled);
         }
 
+        ///
+        /// Counts the zeroes in the binary representation of the number
+        ///
         #[inline]
         pub const fn count_zeros(self) -> u32 {
             return self.as_num().count_zeros() - Self::NUM_BITS_MISSING_FOR_ALIGNMENT as u32;
         }
 
+        ///
+        /// Counts the ones in the binary representation of the number
+        ///
         #[inline]
         pub fn count_ones(self) -> u32 {
             self.as_num().count_ones()
         }
 
+        ///
+        /// Counts the leading zeroes in the binary representation of the number
+        ///
         #[inline]
         pub const fn leading_zeros(self) -> u32 {
             return self.as_num().leading_zeros() - Self::NUM_BITS_MISSING_FOR_ALIGNMENT as u32;
         }
 
+        ///
+        /// Counts the trailing zeroes in the binary representation of the number
+        ///
         #[inline]
         pub const fn trailing_zeros(self) -> u32 {
             let n = self.as_num().trailing_zeros();
@@ -1063,17 +1195,26 @@ macro_rules! common_fn_impl {
             return n;
         }
 
+        ///
+        /// Counts the leading ones in the binary representation of the number
+        ///
         #[inline]
         pub const fn leading_ones(self) -> u32 {
             return (self.as_num() | !Self::MAX_VALUE).leading_ones()
                 - Self::NUM_BITS_MISSING_FOR_ALIGNMENT as u32;
         }
 
+        ///
+        /// Counts the trailing ones in the binary representation of the number
+        ///
         #[inline]
         pub const fn trailing_ones(self) -> u32 {
             return self.as_num().trailing_ones();
         }
 
+        ///
+        /// Reverse the order of all bits in the number
+        ///
         #[inline]
         pub const fn reverse_bits(self) -> Self {
             let mut swap = self.swap_bytes();
@@ -1085,6 +1226,9 @@ macro_rules! common_fn_impl {
             return swap;
         }
 
+        ///
+        /// Adds the number checking for overflow
+        ///
         #[inline]
         pub const fn checked_add(self, rhs: Self) -> Option<Self> {
             let n = self.as_num() + rhs.as_num();
@@ -1095,6 +1239,9 @@ macro_rules! common_fn_impl {
             return Some(Self::from_num(n));
         }
 
+        ///
+        /// Subtracts the number checking for underflow
+        ///
         #[inline]
         pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
             return match self.as_num().checked_sub(rhs.as_num()) {
@@ -1103,6 +1250,9 @@ macro_rules! common_fn_impl {
             };
         }
 
+        ///
+        /// Multiplies the number checking for overflow
+        ///
         #[inline]
         pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
             return match self.as_num().checked_mul(rhs.as_num()) {
@@ -1111,6 +1261,9 @@ macro_rules! common_fn_impl {
             };
         }
 
+        ///
+        /// Divides the number checking for overflow
+        ///
         #[inline]
         pub const fn checked_div(self, rhs: Self) -> Option<Self> {
             if rhs.as_num() == 0 {
@@ -1120,21 +1273,33 @@ macro_rules! common_fn_impl {
             return Some(Self::from_num(self.as_num() / rhs.as_num()));
         }
 
+        ///
+        /// Divides the number. (Since this is an unsigned number this is equal to calling div)
+        ///
         #[inline]
         pub const fn div_euclid(self, rhs: Self) -> Self {
             return Self::from_num(self.as_num() / rhs.as_num());
         }
 
+        ///
+        /// Calculates the rem of the number. (Since this is an unsigned number this is equal to calling rem)
+        ///
         #[inline]
         pub const fn rem_euclid(self, rhs: Self) -> Self {
             return Self::from_num(self.as_num() % rhs.as_num());
         }
 
+        ///
+        /// Divides the number, rounding up when truncating the result back to a whole number.
+        ///
         #[inline]
         pub const fn div_ceil(self, rhs: Self) -> Self {
             return Self::from_num(self.as_num().div_ceil(rhs.as_num()));
         }
 
+        ///
+        /// Returns the next multiple of the two provided numbers.
+        ///
         #[inline]
         pub const fn next_multiple_of(self, rhs: Self) -> Self {
             let result = self.as_num().next_multiple_of(rhs.as_num());
@@ -1142,6 +1307,9 @@ macro_rules! common_fn_impl {
             return Self::from_num(result);
         }
 
+        ///
+        /// Returns the next multiple of the two provided numbers checking for overflow.
+        ///
         #[inline]
         pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
             return match self.as_num().checked_mul(rhs.as_num()) {
@@ -1156,11 +1324,18 @@ macro_rules! common_fn_impl {
             };
         }
 
+        ///
+        /// Returns true if the number is a power of two.
+        /// A power of two only contains a single 1 bit.
+        ///
         #[inline]
         pub const fn is_power_of_two(self) -> bool {
             return self.as_num().is_power_of_two();
         }
 
+        ///
+        /// Returns the next largest power of two.
+        ///
         #[inline]
         pub const fn next_power_of_two(self) -> Self {
             let result = self.as_num().next_power_of_two();
@@ -1168,6 +1343,9 @@ macro_rules! common_fn_impl {
             return Self::from_num(result);
         }
 
+        ///
+        /// Returns the next largest power of two checking for overflow.
+        ///
         #[inline]
         pub const fn checked_next_power_of_two(self) -> Option<Self> {
             return match self.as_num().checked_next_power_of_two() {
@@ -1182,6 +1360,9 @@ macro_rules! common_fn_impl {
             };
         }
 
+        ///
+        /// Shift the number to the right checking for overflow.
+        ///
         #[inline]
         pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
             if rhs >= Self::NUM_BITS as u32 {
@@ -1191,6 +1372,9 @@ macro_rules! common_fn_impl {
             return (Self::from_num(self.as_num() >> rhs), false);
         }
 
+        ///
+        /// Shift the number to the left checking for overflow.
+        ///
         #[inline]
         pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
             if rhs >= Self::NUM_BITS as u32 {
@@ -1200,32 +1384,55 @@ macro_rules! common_fn_impl {
             return (Self::from_num(self.as_num() << rhs), false);
         }
 
+        ///
+        /// Negate the number checking for overflow.
+        /// (Any non 0 unsigned number always overflows)
+        ///
         #[inline]
         pub const fn overflowing_neg(self) -> (Self, bool) {
             let (a, b) = self.as_num().overflowing_neg();
             return (Self::from_num(a), b);
         }
 
+        ///
+        /// Calculate the rem while checking for overflow.
+        /// Unsigned numbers never overflow in this operation.
+        ///
         #[inline]
         pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
             return (self.rem_euclid(rhs), false);
         }
 
+        ///
+        /// Calculate the rem while checking for overflow.
+        /// Unsigned numbers never overflow in this operation.
+        ///
         #[inline]
         pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
             return (self.rem(rhs), false);
         }
 
+        ///
+        /// Divide while checking for overflow.
+        /// Unsigned numbers never overflow in this operation.
+        ///
         #[inline]
         pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
             return (self.div_euclid(rhs), false);
         }
 
+        ///
+        /// Divide while checking for overflow.
+        /// Unsigned numbers never overflow in this operation.
+        ///
         #[inline]
         pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
             return (self.div(rhs), false);
         }
 
+        ///
+        /// Multiply while checking for overflow.
+        ///
         #[inline]
         pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
             let (a, b) = self.as_num().overflowing_mul(rhs.as_num());
@@ -1240,17 +1447,27 @@ macro_rules! common_fn_impl {
             return (Self::from_num(a), false);
         }
 
+        ///
+        /// Calculate the numeric difference between both provided numbers.
+        /// The returned number is always 0 or positive.
+        ///
         #[inline]
         pub const fn abs_diff(self, other: Self) -> Self {
             return Self::from_num(self.as_num().abs_diff(other.as_num()));
         }
 
+        ///
+        /// Subtract while checking for underflow.
+        ///
         #[inline]
         pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
             let (a, b) = self.as_num().overflowing_sub(rhs.as_num());
             return (Self::from_num(a), b);
         }
 
+        ///
+        /// Add while checking for overflow.
+        ///
         #[inline]
         pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
             let result = self.as_num() + rhs.as_num();
@@ -1261,61 +1478,103 @@ macro_rules! common_fn_impl {
             return (Self::from_num(result), false);
         }
 
+        ///
+        /// pow operation that ignores overflow and just "cuts" the overflow off wrapping the result around to 0.
+        ///
         #[inline]
         pub const fn wrapping_pow(self, exp: u32) -> Self {
-            return Self::from_num(self.as_num().pow(exp));
+            return Self::from_num(self.as_num().wrapping_pow(exp));
         }
 
+        ///
+        /// shift right operation that ignores overflow
+        ///
         #[inline]
         pub const fn wrapping_shr(self, rhs: u32) -> Self {
             return Self::from_num(self.as_num().wrapping_shr(rhs));
         }
 
+        ///
+        /// shift left operation that ignores overflow
+        ///
         #[inline]
         pub const fn wrapping_shl(self, rhs: u32) -> Self {
             return Self::from_num(self.as_num().wrapping_shl(rhs));
         }
 
+        ///
+        /// negation operation that ignores overflow.
+        /// (Overflow always happens for non 0 numbers in an unsigned number.)
+        ///
         #[inline]
         pub const fn wrapping_neg(self) -> Self {
             return Self::from_num(self.as_num().wrapping_neg());
         }
 
+        ///
+        /// Calculates the rem and ignore overflow.
+        /// (Overflow never occurs for this operation with unsigned numbers)
+        ///
         #[inline]
         pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
             return Self::from_num(self.as_num().wrapping_rem_euclid(rhs.as_num()));
         }
 
+        ///
+        /// Calculates the rem and ignore overflow.
+        /// (Overflow never occurs for this operation with unsigned numbers)
+        ///
         #[inline]
         pub const fn wrapping_rem(self, rhs: Self) -> Self {
             return Self::from_num(self.as_num().wrapping_rem(rhs.as_num()));
         }
 
+        ///
+        /// Calculates the div and ignore overflow.
+        /// (Overflow never occurs for this operation with unsigned numbers)
+        ///
         #[inline]
         pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
             return Self::from_num(self.as_num().wrapping_div_euclid(rhs.as_num()));
         }
 
+        ///
+        /// Calculates the div and ignore overflow.
+        /// (Overflow never occurs for this operation with unsigned numbers)
+        ///
         #[inline]
         pub const fn wrapping_div(self, rhs: Self) -> Self {
             return Self::from_num(self.as_num().wrapping_div(rhs.as_num()));
         }
 
+        ///
+        /// Calculates the multiplication and ignore overflow wrapping the number around to 0.
+        ///
         #[inline]
         pub const fn wrapping_mul(self, rhs: Self) -> Self {
             return Self::from_num(self.as_num().wrapping_mul(rhs.as_num()));
         }
 
+        ///
+        /// Calculates the sub and ignore ignores the underflow wrapping around to MAX.
+        ///
         #[inline]
         pub const fn wrapping_sub(self, rhs: Self) -> Self {
             return Self::from_num(self.as_num().wrapping_sub(rhs.as_num()));
         }
 
+        ///
+        /// Calculates the add and ignore ignores the overflow wrapping the number around to 0.
+        ///
         #[inline]
         pub const fn wrapping_add(self, rhs: Self) -> Self {
             return Self::from_num(self.as_num().wrapping_add(rhs.as_num()));
         }
 
+        ///
+        /// Calculates the pow (power of) with the given exponent.
+        /// If the result is larger than the value MAX or otherwise overflows then MAX is returned.
+        ///
         #[inline]
         pub const fn saturating_pow(self, exp: u32) -> Self {
             return match self.as_num().checked_pow(exp) {
@@ -1330,6 +1589,9 @@ macro_rules! common_fn_impl {
             };
         }
 
+        ///
+        /// Returns MAX if rhs is 0. Otherwise performs a normal div operation.
+        ///
         #[inline]
         pub const fn saturating_div(self, rhs: Self) -> Self {
             if rhs.eq(&Self::MIN) {
@@ -1339,6 +1601,10 @@ macro_rules! common_fn_impl {
             return self.div(rhs);
         }
 
+        ///
+        /// Calculates the multiplication.
+        /// If the result overflows or is larger than MAX returns MAX.
+        ///
         #[inline]
         pub const fn saturating_mul(self, rhs: Self) -> Self {
             return match self.as_num().checked_mul(rhs.as_num()) {
@@ -1353,11 +1619,18 @@ macro_rules! common_fn_impl {
             };
         }
 
+        ///
+        /// Calculates the sub and return 0 if an underflow would have otherwise happened.
+        ///
         #[inline]
         pub const fn saturating_sub(self, rhs: Self) -> Self {
             return Self::from_num(self.as_num().saturating_sub(rhs.as_num()));
         }
 
+        ///
+        /// Calculates the addition.
+        /// If the result overflows or is larger than MAX returns MAX.
+        ///
         #[inline]
         pub const fn saturating_add(self, rhs: Self) -> Self {
             let result = self.as_num() + rhs.as_num();
@@ -1368,6 +1641,9 @@ macro_rules! common_fn_impl {
             return Self::from_num(result);
         }
 
+        ///
+        /// Calculates the pow only returning a result if the result does not overflow.
+        ///
         #[inline]
         pub const fn checked_pow(self, exp: u32) -> Option<Self> {
             return match self.as_num().checked_pow(exp) {
@@ -1382,6 +1658,9 @@ macro_rules! common_fn_impl {
             };
         }
 
+        ///
+        /// Shift right while checking for overflow.
+        ///
         #[inline]
         pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
             if rhs >= Self::NUM_BITS as u32 {
@@ -1391,6 +1670,9 @@ macro_rules! common_fn_impl {
             return Some(self.shr(rhs));
         }
 
+        ///
+        /// Shift left while checking for overflow.
+        ///
         #[inline]
         pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
             if rhs >= Self::NUM_BITS as u32 {
@@ -1400,6 +1682,10 @@ macro_rules! common_fn_impl {
             return Some(self.shl(rhs));
         }
 
+        ///
+        /// This fn only returns 0 if self is 0.
+        /// Otherwise None is returned as for unsigned numbers every negation other than 0 overflows.
+        ///
         #[inline]
         pub const fn checked_neg(self) -> Option<Self> {
             if self.eq(&Self::MIN) {
@@ -1409,36 +1695,70 @@ macro_rules! common_fn_impl {
             return None;
         }
 
+        ///
+        /// calculates the logarithm to a given base of self.
+        /// Result is always rounded down.
+        /// This function will panic if self is 0 or base is not at least 2.
+        ///
         #[inline]
         pub const fn ilog(self, base: Self) -> u32 {
             return self.as_num().ilog(base.as_num());
         }
 
+        ///
+        /// calculates the logarithm with a base of 2 of self.
+        /// Result is always rounded down.
+        /// This function will panic if self is 0.
+        ///
         #[inline]
         pub const fn ilog2(self) -> u32 {
             return self.as_num().ilog2();
         }
 
+        ///
+        /// Calculates the logarithm with a base of 10 of self.
+        /// Result is always rounded down.
+        /// This function will panic if self is 0.
+        ///
         #[inline]
         pub const fn ilog10(self) -> u32 {
             return self.as_num().ilog10();
         }
 
+        ///
+        /// Calculates the logarithm with a given base of self.
+        /// Result is always rounded down.
+        /// This fn will return None if self is 0 or base is not at least 2.
+        ///
         #[inline]
         pub const fn checked_ilog(self, base: Self) -> Option<u32> {
             return self.as_num().checked_ilog(base.as_num());
         }
 
+        ///
+        /// Calculates the logarithm with a base of 10 of self.
+        /// Result is always rounded down.
+        /// This fn will return None if self is 0
+        ///
         #[inline]
         pub const fn checked_ilog10(self) -> Option<u32> {
             return self.as_num().checked_ilog10();
         }
 
+        ///
+        /// Calculates the logarithm with a base of 2 of self.
+        /// Result is always rounded down.
+        /// This fn will return None if self is 0
+        ///
         #[inline]
         pub const fn checked_ilog2(self) -> Option<u32> {
             return self.as_num().checked_ilog2();
         }
 
+        ///
+        /// Calculates the rem.
+        /// Returns None if rhs is 0.
+        ///
         #[inline]
         pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
             if rhs.eq(&Self::MIN) {
@@ -1448,6 +1768,10 @@ macro_rules! common_fn_impl {
             return Some(self.rem_euclid(rhs));
         }
 
+        ///
+        /// Calculates the rem.
+        /// Returns None if rhs is 0.
+        ///
         #[inline]
         pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
             if rhs.eq(&Self::MIN) {
@@ -1457,6 +1781,10 @@ macro_rules! common_fn_impl {
             return Some(self.rem(rhs));
         }
 
+        ///
+        /// Calculates the div.
+        /// Returns None if rhs is 0.
+        ///
         #[inline]
         pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
             if rhs.eq(&Self::MIN) {
@@ -1466,46 +1794,103 @@ macro_rules! common_fn_impl {
             return Some(self.div_euclid(rhs));
         }
 
+        ///
+        /// Calculates the pow of self to a given exponent.
+        ///
         #[inline]
         pub const fn pow(self, exp: u32) -> Self {
-            Self::from_num(self.as_num().pow(exp))
+            Self::from_num_checked(self.as_num().pow(exp))
         }
     };
 }
 
 #[cfg(feature = "unsafe_fetch")]
-#[macro_export]
-macro_rules! unsafe_math_impl {
+
+#[doc(hidden)]
+macro_rules! unsafe_fetch_impl {
     ($source:ty, $helper:ty) => {
+
+        ///
+        /// This function ignores the provenance of the given pointer and reads
+        /// the number as if it were the next largest aligned value.
+        /// This will read more bytes than size_of(self)
+        ///
+        /// This should only be used if its known what sits behind the point in memory.
+        /// On little endian systems the high order bytes of the result are filled
+        /// with the unexpected data. On big endian systems the high order bytes are zeroed out.
+        ///
         #[cfg(target_endian = "little")]
         #[inline]
         pub unsafe fn fetch_unsafe(data: *const Self) -> $helper {
             return data.cast::<$helper>().read_unaligned();
         }
 
+        ///
+        /// This function ignores the provenance of the given pointer and reads
+        /// the number as if it were the next largest aligned value.
+        /// This will read more bytes than size_of(self)
+        ///
+        /// This should only be used if its known what sits behind the point in memory.
+        /// On little endian systems the high order bytes of the result are filled
+        /// with the unexpected data. On big endian systems the high order bytes are zeroed out.
+        ///
         #[cfg(target_endian = "big")]
         #[inline]
         pub unsafe fn fetch_unsafe(data: *const Self) -> $helper {
             return data.cast::<$helper>().read_unaligned() >> Self::NUM_BITS_MISSING_FOR_ALIGNMENT;
         }
 
+        ///
+        /// This function ignores the provenance of the given pointer and reads
+        /// the number as if it were the next largest aligned value.
+        /// This will read more bytes than size_of(self)
+        ///
+        /// The result has all additionally read bytes clamped to not be larger than Self::MAX.
+        ///
         #[cfg(target_endian = "little")]
         #[inline]
         pub unsafe fn fetch_unsafe_clamped(data: *const Self) -> $helper {
             return data.cast::<$helper>().read_unaligned() & Self::MAX_VALUE;
         }
 
+        ///
+        /// This function ignores the provenance of the given pointer and reads
+        /// the number as if it were the next largest aligned value.
+        /// This will read more bytes than size_of(self)
+        ///
+        /// The result has all additionally read bytes clamped to not be larger than Self::MAX.
+        ///
         #[cfg(target_endian = "big")]
         #[inline]
         pub unsafe fn fetch_unsafe_clamped(data: *const Self) -> $helper {
             return data.cast::<$helper>().read_unaligned() >> Self::NUM_BITS_MISSING_FOR_ALIGNMENT;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
+        /// Both values are then added to each other. The result may overflow Self::MAX_VALUE as it is
+        /// implicitly converted to the next largest aligned type.
+        ///
+        /// The unexpected bytes that are read have no effect on the result of the computation as
+        /// they are ignored for the numerical computation.
+        ///
         #[inline]
         pub unsafe fn unsafe_add_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
             return Self::fetch_unsafe_clamped(lhs) + Self::fetch_unsafe_clamped(rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
+        /// Both values are then added to each other.
+        /// If the result would overflow then the overflow is truncated.
+        ///
+        /// The unexpected bytes that are read have no effect on the result of the computation as
+        /// they are ignored for the numerical computation.
+        ///
         #[inline]
         pub unsafe fn unsafe_add_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
             return Self::from_num(
@@ -1513,6 +1898,16 @@ macro_rules! unsafe_math_impl {
             );
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
+        /// Both values are then added to each other.
+        /// If the result would overflow then the overflow is truncated.
+        ///
+        /// The unexpected bytes that are read have no effect on the result of the computation as
+        /// they are ignored for the numerical computation.
+        ///
         #[inline]
         pub unsafe fn unsafe_add_with_aligned_into_unaligned(
             lhs: *const Self,
@@ -1521,6 +1916,16 @@ macro_rules! unsafe_math_impl {
             return Self::from_num(Self::fetch_unsafe_clamped(lhs) + rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
+        /// Both values are then added to each other. This function may overflow Self::MAX
+        /// but it may panic if overflow checks for the next largest aligned type are enabled.
+        ///
+        /// The unexpected bytes that are read have no effect on the result of the computation as
+        /// they are ignored for the numerical computation.
+        ///
         #[inline]
         pub unsafe fn unsafe_add_with_aligned_into_aligned(
             lhs: *const Self,
@@ -1529,11 +1934,19 @@ macro_rules! unsafe_math_impl {
             return Self::fetch_unsafe_clamped(lhs) + rhs;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_sub_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
             return Self::fetch_unsafe_clamped(lhs) - Self::fetch_unsafe_clamped(rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_sub_with_aligned_into_aligned(
             lhs: *const Self,
@@ -1542,6 +1955,10 @@ macro_rules! unsafe_math_impl {
             return Self::fetch_unsafe_clamped(lhs) - rhs;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_sub_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
             return Self::from_num(
@@ -1549,6 +1966,10 @@ macro_rules! unsafe_math_impl {
             );
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_sub_with_aligned_into_unaligned(
             lhs: *const Self,
@@ -1557,11 +1978,19 @@ macro_rules! unsafe_math_impl {
             return Self::from_num(Self::fetch_unsafe_clamped(lhs) - rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_mul_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
             return Self::fetch_unsafe_clamped(lhs) * Self::fetch_unsafe_clamped(rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_mul_with_aligned_into_aligned(
             lhs: *const Self,
@@ -1570,6 +1999,10 @@ macro_rules! unsafe_math_impl {
             return Self::fetch_unsafe_clamped(lhs) * rhs;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_mul_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
             return Self::from_num(
@@ -1577,6 +2010,10 @@ macro_rules! unsafe_math_impl {
             );
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_mul_with_aligned_into_unaligned(
             lhs: *const Self,
@@ -1585,11 +2022,19 @@ macro_rules! unsafe_math_impl {
             return Self::from_num(Self::fetch_unsafe_clamped(lhs) * rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_div_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
             return Self::fetch_unsafe_clamped(lhs) / Self::fetch_unsafe_clamped(rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_div_with_aligned_into_aligned(
             lhs: *const Self,
@@ -1598,6 +2043,10 @@ macro_rules! unsafe_math_impl {
             return Self::fetch_unsafe_clamped(lhs) / rhs;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_div_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
             return Self::from_num(
@@ -1605,6 +2054,10 @@ macro_rules! unsafe_math_impl {
             );
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_div_with_aligned_into_unaligned(
             lhs: *const Self,
@@ -1613,11 +2066,19 @@ macro_rules! unsafe_math_impl {
             return Self::from_num(Self::fetch_unsafe_clamped(lhs) / rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_rem_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
             return Self::fetch_unsafe_clamped(lhs) % Self::fetch_unsafe_clamped(rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_rem_with_aligned_into_aligned(
             lhs: *const Self,
@@ -1626,6 +2087,10 @@ macro_rules! unsafe_math_impl {
             return Self::fetch_unsafe_clamped(lhs) % rhs;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_rem_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
             return Self::from_num(
@@ -1633,6 +2098,10 @@ macro_rules! unsafe_math_impl {
             );
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_rem_with_aligned_into_unaligned(
             lhs: *const Self,
@@ -1641,11 +2110,19 @@ macro_rules! unsafe_math_impl {
             return Self::from_num(Self::fetch_unsafe_clamped(lhs) % rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_or_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
             return (Self::fetch_unsafe(lhs) | Self::fetch_unsafe(rhs)) & Self::MAX_VALUE;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_or_with_aligned_into_aligned(
             lhs: *const Self,
@@ -1654,11 +2131,19 @@ macro_rules! unsafe_math_impl {
             return Self::fetch_unsafe_clamped(lhs) | rhs;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_or_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
             return Self::from_num(Self::fetch_unsafe(lhs) | Self::fetch_unsafe(rhs));
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_or_with_aligned_into_unaligned(
             lhs: *const Self,
@@ -1667,11 +2152,19 @@ macro_rules! unsafe_math_impl {
             return Self::from_num(Self::fetch_unsafe(lhs) | rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_and_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
             return (Self::fetch_unsafe(lhs) & Self::fetch_unsafe(rhs)) & Self::MAX_VALUE;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_and_with_aligned_into_aligned(
             lhs: *const Self,
@@ -1680,11 +2173,19 @@ macro_rules! unsafe_math_impl {
             return Self::fetch_unsafe(lhs) & rhs;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_and_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
             return Self::from_num(Self::fetch_unsafe(lhs) & Self::fetch_unsafe(rhs));
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_and_with_aligned_into_unaligned(
             lhs: *const Self,
@@ -1693,11 +2194,19 @@ macro_rules! unsafe_math_impl {
             return Self::from_num(Self::fetch_unsafe(lhs) & rhs);
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_xor_into_aligned(lhs: *const Self, rhs: *const Self) -> $helper {
             return (Self::fetch_unsafe(lhs) ^ Self::fetch_unsafe(rhs)) & Self::MAX_VALUE;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_xor_with_aligned_into_aligned(
             lhs: *const Self,
@@ -1706,11 +2215,19 @@ macro_rules! unsafe_math_impl {
             return Self::fetch_unsafe_clamped(lhs) ^ rhs;
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_xor_into_unaligned(lhs: *const Self, rhs: *const Self) -> Self {
             return Self::from_num(Self::fetch_unsafe(lhs) ^ Self::fetch_unsafe(rhs));
         }
 
+        ///
+        /// This function ignores provenance of the given pointers and reads the number as if it were the next
+        /// largest aligned value. This will read more bytes than size_of(self)
+        ///
         #[inline]
         pub unsafe fn unsafe_xor_with_aligned_into_unaligned(
             lhs: *const Self,
@@ -1722,7 +2239,8 @@ macro_rules! unsafe_math_impl {
 }
 
 #[cfg(feature = "num_traits_support")]
-#[macro_export]
+
+#[doc(hidden)]
 macro_rules! num_traits_impl {
     ($source:ty) => {
         impl num_traits::One for $source {
@@ -1970,12 +2488,13 @@ macro_rules! num_traits_impl {
     };
 }
 
+//
+// The guy forgot to implement Into trait for the wrapper of any 128 bit aligned types. :(
+// We got format tho and can format+parse. Slow but it works oh well...
+//
 #[cfg(feature = "ux_support")]
-#[macro_export]
-///
-/// The guy forgot to implement Into trait for the wrapper of any 128 bit aligned types. :(
-/// We got format tho and can format+parse. Slow but it works oh well...
-///
+
+#[doc(hidden)]
 macro_rules! ux_conversion_via_format {
     ($uintx_type:ty, $uintx_intermediary:ty, $intermediary:ty, $intermediary_signed:ty, $mask:expr, $sign_bit:expr, $ux_type:ty, $ux_type_signed:ty) => {
         impl Into<$ux_type> for $uintx_type {
@@ -2051,7 +2570,8 @@ macro_rules! ux_conversion_via_format {
 }
 
 #[cfg(feature = "ux_support")]
-#[macro_export]
+
+#[doc(hidden)]
 macro_rules! ux_conversion {
     ($uintx_type:ty, $uintx_intermediary:ty, $intermediary:ty, $intermediary_signed:ty, $mask:expr, $sign_bit:expr, $ux_type:ty, $ux_type_signed:ty) => {
         impl Into<$ux_type> for $uintx_type {
@@ -2119,7 +2639,8 @@ macro_rules! ux_conversion {
 }
 
 #[cfg(feature = "intx_support")]
-#[macro_export]
+
+#[doc(hidden)]
 macro_rules! intx_conv_impl {
     ($uintx_type:ty, $uintx_intermediary:ty, $intx_intermediary:ty, $intx_type:ty, $intx_signed_type:ty) => {
         impl From<$intx_type> for $uintx_type {
@@ -2182,7 +2703,8 @@ macro_rules! intx_conv_impl {
     };
 }
 
-#[macro_export]
+
+#[doc(hidden)]
 macro_rules! from_to_impl_for_primitive {
     ($source:ty, $helper:ty, $target:ty) => {
         impl From<$target> for $source {
@@ -2211,7 +2733,8 @@ macro_rules! from_to_impl_for_primitive {
     };
 }
 
-#[macro_export]
+
+#[doc(hidden)]
 macro_rules! sh_impl_conv {
     ($lhs:ty, $rhs:ty) => {
         impl std::ops::Shl<$rhs> for $lhs {
@@ -2272,7 +2795,8 @@ macro_rules! sh_impl_conv {
     };
 }
 
-#[macro_export]
+
+#[doc(hidden)]
 macro_rules! sh_impl {
     ($lhs:ty, $rhs:ty) => {
         impl std::ops::Shl<$rhs> for $lhs {
@@ -2333,22 +2857,37 @@ macro_rules! sh_impl {
     };
 }
 
-#[macro_export]
+#[doc(hidden)]
 macro_rules! type_impl {
     ($source:ty, $helper:ty, $size:literal) => {
         #[allow(dead_code)]
         impl $source {
+            ///
+            /// Maximum value of the type.
+            ///
             pub const MAX: $source = Self([0xFFu8; $size]);
+            ///
+            /// Minimum value of the type.
+            ///
             pub const MIN: $source = Self([0x00u8; $size]);
+            ///
+            /// Maximum numeric value of the type
+            ///
             pub const MAX_VALUE: $helper = Self([0xFFu8; $size]).as_num();
+            ///
+            /// Size of this type in bits.
+            ///
             pub const NUM_BITS: usize = $size * 8;
+            ///
+            /// Amount of bits missing for the type to have the same size as the next larger algined integer type.
+            ///
             pub const NUM_BITS_MISSING_FOR_ALIGNMENT: usize =
                 (std::mem::size_of::<$helper>() - $size) * 8;
 
             crate::common_fn_impl!($source, $helper, $size);
 
             #[cfg(feature = "unsafe_fetch")]
-            crate::unsafe_math_impl!($source, $helper);
+            crate::unsafe_fetch_impl!($source, $helper);
         }
 
         impl From<[u8; $size]> for $source {
@@ -2360,6 +2899,18 @@ macro_rules! type_impl {
         impl Into<[u8; $size]> for $source {
             fn into(self) -> [u8; $size] {
                 return self.0;
+            }
+        }
+
+        impl From<&[u8; $size]> for $source {
+            fn from(value: &[u8; $size]) -> Self {
+                return Self(value.clone());
+            }
+        }
+
+        impl Into<[u8; $size]> for &$source {
+            fn into(self) -> [u8; $size] {
+                return self.0.clone();
             }
         }
 
@@ -3897,3 +4448,22 @@ macro_rules! type_impl {
         crate::num_traits_impl!($source);
     };
 }
+
+pub(crate) use type_impl;
+pub(crate) use type_conversion;
+pub(crate) use common_fn_impl;
+pub(crate) use common_traits_impl;
+pub(crate) use sh_impl_conv;
+pub(crate) use sh_impl;
+pub(crate) use from_to_impl_for_primitive;
+
+#[cfg(feature = "intx_support")]
+pub(crate) use intx_conv_impl;
+#[cfg(feature = "num_traits_support")]
+pub(crate) use num_traits_impl;
+#[cfg(feature = "ux_support")]
+pub(crate) use ux_conversion;
+#[cfg(feature = "ux_support")]
+pub(crate) use ux_conversion_via_format;
+#[cfg(feature = "unsafe_fetch")]
+pub(crate) use unsafe_fetch_impl;
