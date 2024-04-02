@@ -533,8 +533,14 @@ macro_rules! test_type {
 }
 
 #[test]
-fn manual() {
-    let _ = U24T::make_test_data();
+fn test() {
+    let mut num : u24 = u24::from(12u32);
+    num += 1u32;
+    num = num + 1u32;
+    num += u24::from(4);
+    num = num + u24::from(4);
+
+    assert_eq!(num, 22)
 }
 
 test_type!(u24, U24T);

@@ -14,6 +14,22 @@ Unaligned integer types in rust with arithmetic operations
 - u112
 - u120
 
+Each of these types implement and provide all the functionality of u32.
+In addition to that they also overload all operators for the next largest aligned number.
+Example:
+```rust
+#[test]
+fn test() {
+  let mut num : u24 = u24::from(12u32);
+  num += 1u32;
+  num = num + 1u32;
+  num += u24::from(4);
+  num = num + u24::from(4);
+  
+  assert_eq!(num, 22)
+}
+```
+
 ### Additional optional crate features
 #### num_traits_support
 Enabling this feature causes all types of this crate to implement the
