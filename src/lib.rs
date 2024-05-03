@@ -3,7 +3,7 @@ mod type_macro;
 use crate::type_macro::{*};
 
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u24(pub(crate) [u8; 3]);
@@ -67,7 +67,7 @@ type_conversion!(u104, u32, u24);
 type_conversion!(u112, u32, u24);
 type_conversion!(u120, u32, u24);
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u40(pub(crate) [u8; 5]);
@@ -127,7 +127,7 @@ type_conversion!(u104, u64, u40);
 type_conversion!(u112, u64, u40);
 type_conversion!(u120, u64, u40);
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u48(pub(crate) [u8; 6]);
@@ -188,7 +188,7 @@ type_conversion!(u104, u64, u48);
 type_conversion!(u112, u64, u48);
 type_conversion!(u120, u64, u48);
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u56(pub(crate) [u8; 7]);
@@ -248,7 +248,7 @@ type_conversion!(u104, u64, u56);
 type_conversion!(u112, u64, u56);
 type_conversion!(u120, u64, u56);
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u72(pub(crate) [u8; 9]);
@@ -308,7 +308,7 @@ type_conversion!(u104, u128, u72);
 type_conversion!(u112, u128, u72);
 type_conversion!(u120, u128, u72);
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u80(pub(crate) [u8; 10]);
@@ -368,7 +368,7 @@ type_conversion!(u104, u128, u80);
 type_conversion!(u112, u128, u80);
 type_conversion!(u120, u128, u80);
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u88(pub(crate) [u8; 11]);
@@ -428,7 +428,7 @@ type_conversion!(u104, u128, u88);
 type_conversion!(u112, u128, u88);
 type_conversion!(u120, u128, u88);
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u96(pub(crate) [u8; 12]);
@@ -488,7 +488,7 @@ type_conversion!(u104, u128, u96);
 type_conversion!(u112, u128, u96);
 type_conversion!(u120, u128, u96);
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u104(pub(crate) [u8; 13]);
@@ -548,7 +548,7 @@ type_conversion!(u96, u128, u104);
 type_conversion!(u112, u128, u104);
 type_conversion!(u120, u128, u104);
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u112(pub(crate) [u8; 14]);
@@ -608,7 +608,7 @@ type_conversion!(u96, u128, u112);
 type_conversion!(u104, u128, u112);
 type_conversion!(u120, u128, u112);
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Hash)]
 #[allow(non_camel_case_types)]
 #[repr(transparent)]
 pub struct u120(pub(crate) [u8; 15]);
