@@ -19,6 +19,8 @@ cargo build --features num_traits_support
 cargo build --features ux_support
 cargo build --features intx_support
 cargo build --features unsafe_fetch
+cargo build --features half_support
+
 cargo clean
 cargo +nightly miri test --features all
 cargo clean

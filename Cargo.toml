@@ -1,6 +1,6 @@
 [package]
 name = "uintx"
-version = "0.0.2"
+version = "0.0.3"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 authors = ["Alexander Schütz <aschuetz@protonmail.com>"]
@@ -10,25 +10,32 @@ description = "Unaligned unsigned integers with exact size in memory and arithme
 readme = "README.md"
 repository = "https://github.com/AlexanderSchuetz97/uintx"
 
+[package.metadata.docs.rs]
+all-features = true
+
 [lib]
 crate-type = ["rlib"]
 
 [features]
-all = ["num_traits_support", "ux_support", "intx_support", "unsafe_fetch"]
+all = ["num_traits_support", "ux_support", "intx_support", "unsafe_fetch", "half_support", "serde"]
 num_traits_support = ["num-traits"]
 ux_support = ["ux"]
 intx_support = ["intx"]
+half_support = ["half"]
 unsafe_fetch = []
 
 [dependencies]
-num-traits = {version = "^0.2.18", optional = true }
-ux = { version = "^0.1.5", optional = true }
+num-traits = {version = "^0.2.19", optional = true }
+ux = { version = "^0.1.6", optional = true }
 intx = { version = "^0.1.0", optional = true }
+half = { version = "^2.4.1", optional = true }
+serde = { version = "^1.0.202", optional = true , features = ["derive"]}
 
 [dev-dependencies]
-getrandom = "0.2.12"
+getrandom = "0.2.15"
 
 
 [profile.dev]
+#overflow-checks = false
 #debug = 2
 #opt-level = 3

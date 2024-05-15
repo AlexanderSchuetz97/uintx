@@ -17,7 +17,6 @@ macro_rules! type_conversion {
     };
 }
 
-
 #[doc(hidden)]
 macro_rules! common_traits_impl {
     ($source:ty, $helper:ty, $size:literal) => {
@@ -2911,6 +2910,34 @@ macro_rules! type_impl {
         impl Into<[u8; $size]> for &$source {
             fn into(self) -> [u8; $size] {
                 return self.0.clone();
+            }
+        }
+
+        #[cfg(feature = "half_support")]
+        impl Into<half::f16> for $source {
+            fn into(self) -> half::f16 {
+                return half::f16::from_f32(self.as_num() as f32);
+            }
+        }
+
+        #[cfg(feature = "half_support")]
+        impl From<half::f16> for $source {
+            fn from(value: half::f16) -> $source {
+                return Self::from_num(value.to_f32() as $helper);
+            }
+        }
+
+        #[cfg(feature = "half_support")]
+        impl Into<half::f16> for &$source {
+            fn into(self) -> half::f16 {
+                return half::f16::from_f32(self.as_num() as f32);
+            }
+        }
+
+        #[cfg(feature = "half_support")]
+        impl From<&half::f16> for $source {
+            fn from(value: &half::f16) -> $source {
+                return Self::from_num(value.to_f32() as $helper);
             }
         }
 
