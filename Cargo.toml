@@ -1,6 +1,6 @@
 [package]
 name = "uintx"
-version = "0.0.3"
+version = "0.1.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 authors = ["Alexander Schütz <aschuetz@protonmail.com>"]
@@ -17,12 +17,13 @@ all-features = true
 crate-type = ["rlib"]
 
 [features]
-all = ["num_traits_support", "ux_support", "intx_support", "unsafe_fetch", "half_support", "serde"]
+all = ["num_traits_support", "ux_support", "intx_support", "unsafe_fetch", "half_support", "serde", "std"]
 num_traits_support = ["num-traits"]
 ux_support = ["ux"]
 intx_support = ["intx"]
 half_support = ["half"]
 unsafe_fetch = []
+std = []
 
 [dependencies]
 num-traits = {version = "^0.2.19", optional = true }

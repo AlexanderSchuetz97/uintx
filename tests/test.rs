@@ -12,7 +12,7 @@ use uintx::u80;
 use uintx::u88;
 use uintx::u96;
 
-const TEST_SET_SIZE: usize = if cfg!(miri) { 0xF } else { 0xFFFF };
+const TEST_SET_SIZE: usize = if cfg!(miri) { 0xF } else if cfg!(target_endian = "big") { 0xF} else { 0xFFFF };
 
 macro_rules! test_type {
     ($under_test:ty, $tt:ident) => {

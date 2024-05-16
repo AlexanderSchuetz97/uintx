@@ -28,3 +28,13 @@ cargo test --features all
 cargo test
 cargo test --release --features all
 cargo test --release
+cargo clean
+cargo test --features num_traits_support,ux_support,intx_support,unsafe_fetch,half_support,serde
+cargo clean
+#s390x is big endian
+cross build --target s390x-unknown-linux-gnu
+cargo clean
+cross build --target s390x-unknown-linux-gnu --features all
+cargo clean
+cross test --target s390x-unknown-linux-gnu --features all
+cargo clean

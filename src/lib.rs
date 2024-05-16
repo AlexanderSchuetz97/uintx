@@ -1,3 +1,4 @@
+#![cfg_attr(not(feature = "std"), no_std)]
 mod type_macro;
 
 use crate::type_macro::{*};
@@ -544,7 +545,7 @@ impl u72 {
     #[cfg(target_endian = "big")]
     #[inline]
     pub(crate) const fn from_num(n: u128) -> Self {
-        let [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = n.to_ne_bytes();
+        let [_, _, _, _, _, _, _, h, i, j, k, l, m, n, o, p] = n.to_ne_bytes();
         u72([h, i, j, k, l, m, n, o, p])
     }
 
@@ -1883,7 +1884,7 @@ impl u120 {
     #[inline]
     pub const fn as_num(self) -> u128 {
         let u120([a, b, c, d, e, f, g, h, i, j, k, l, m, n, o]) = self;
-        u128::from_ne_bytes([0, a, b, c, d, e, f, g, h, i, j, k, l, m, n])
+        u128::from_ne_bytes([0, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o])
     }
 
     ///
@@ -1907,7 +1908,7 @@ impl u120 {
     #[inline]
     pub(crate) const fn from_num(n: u128) -> Self {
         let [_, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = n.to_ne_bytes();
-        u112([b, c, d, e, f, g, h, i, j, k, l, m, n, o, p])
+        u120([b, c, d, e, f, g, h, i, j, k, l, m, n, o, p])
     }
 
     #[allow(dead_code)]

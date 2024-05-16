@@ -26,55 +26,55 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::fmt::Debug for $source {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                std::fmt::Debug::fmt(&self.as_num(), f)
+        impl core::fmt::Debug for $source {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Debug::fmt(&self.as_num(), f)
             }
         }
 
-        impl std::fmt::Display for $source {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                std::fmt::Display::fmt(&self.as_num(), f)
+        impl core::fmt::Display for $source {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Display::fmt(&self.as_num(), f)
             }
         }
 
-        impl std::fmt::Octal for $source {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                std::fmt::Octal::fmt(&self.as_num(), f)
+        impl core::fmt::Octal for $source {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Octal::fmt(&self.as_num(), f)
             }
         }
 
-        impl std::fmt::LowerHex for $source {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                std::fmt::LowerHex::fmt(&self.as_num(), f)
+        impl core::fmt::LowerHex for $source {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::LowerHex::fmt(&self.as_num(), f)
             }
         }
 
-        impl std::fmt::UpperHex for $source {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                std::fmt::UpperHex::fmt(&self.as_num(), f)
+        impl core::fmt::UpperHex for $source {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::UpperHex::fmt(&self.as_num(), f)
             }
         }
 
-        impl std::fmt::LowerExp for $source {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                std::fmt::LowerExp::fmt(&self.as_num(), f)
+        impl core::fmt::LowerExp for $source {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::LowerExp::fmt(&self.as_num(), f)
             }
         }
 
-        impl std::fmt::UpperExp for $source {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                std::fmt::UpperExp::fmt(&self.as_num(), f)
+        impl core::fmt::UpperExp for $source {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::UpperExp::fmt(&self.as_num(), f)
             }
         }
 
-        impl std::fmt::Binary for $source {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                std::fmt::Binary::fmt(&self.as_num(), f)
+        impl core::fmt::Binary for $source {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                core::fmt::Binary::fmt(&self.as_num(), f)
             }
         }
 
-        impl std::ops::Not for $source {
+        impl core::ops::Not for $source {
             type Output = $source;
 
             fn not(self) -> Self::Output {
@@ -91,7 +91,7 @@ macro_rules! common_traits_impl {
         impl Eq for $source {}
 
         impl PartialOrd<$source> for $source {
-            fn partial_cmp(&self, other: &$source) -> Option<std::cmp::Ordering> {
+            fn partial_cmp(&self, other: &$source) -> Option<core::cmp::Ordering> {
                 self.0.partial_cmp(&other.0)
             }
         }
@@ -103,17 +103,17 @@ macro_rules! common_traits_impl {
         }
 
         impl PartialOrd<$helper> for $source {
-            fn partial_cmp(&self, other: &$helper) -> Option<std::cmp::Ordering> {
+            fn partial_cmp(&self, other: &$helper) -> Option<core::cmp::Ordering> {
                 self.as_num().partial_cmp(other)
             }
         }
         impl Ord for $source {
-            fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+            fn cmp(&self, other: &Self) -> core::cmp::Ordering {
                 self.0.cmp(&other.0)
             }
         }
 
-        impl std::ops::Add for $source {
+        impl core::ops::Add for $source {
             type Output = Self;
 
             fn add(self, rhs: Self) -> Self {
@@ -121,7 +121,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Add<$source> for &$source {
+        impl core::ops::Add<$source> for &$source {
             type Output = $source;
 
             fn add(self, rhs: $source) -> $source {
@@ -129,14 +129,14 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Add<&$source> for &$source {
+        impl core::ops::Add<&$source> for &$source {
             type Output = $source;
             fn add(self, rhs: &$source) -> $source {
                 <$source>::from_num_checked(self.as_num() + rhs.as_num())
             }
         }
 
-        impl std::ops::Add<$helper> for &$source {
+        impl core::ops::Add<$helper> for &$source {
             type Output = $source;
 
             fn add(self, rhs: $helper) -> $source {
@@ -144,7 +144,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Add<&$helper> for &$source {
+        impl core::ops::Add<&$helper> for &$source {
             type Output = $source;
 
             fn add(self, rhs: &$helper) -> $source {
@@ -152,7 +152,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Add<&$source> for $source {
+        impl core::ops::Add<&$source> for $source {
             type Output = Self;
 
             fn add(self, rhs: &Self) -> Self {
@@ -160,7 +160,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Add<$helper> for $source {
+        impl core::ops::Add<$helper> for $source {
             type Output = Self;
 
             fn add(self, rhs: $helper) -> Self {
@@ -168,7 +168,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Add<&$helper> for $source {
+        impl core::ops::Add<&$helper> for $source {
             type Output = Self;
 
             fn add(self, rhs: &$helper) -> Self {
@@ -176,31 +176,31 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::AddAssign for $source {
+        impl core::ops::AddAssign for $source {
             fn add_assign(&mut self, rhs: Self) {
                 *self = Self::from_num_checked(self.as_num() + rhs.as_num());
             }
         }
 
-        impl std::ops::AddAssign<&$source> for $source {
+        impl core::ops::AddAssign<&$source> for $source {
             fn add_assign(&mut self, rhs: &Self) {
                 *self = Self::from_num_checked(self.as_num() + rhs.as_num());
             }
         }
 
-        impl std::ops::AddAssign<$helper> for $source {
+        impl core::ops::AddAssign<$helper> for $source {
             fn add_assign(&mut self, rhs: $helper) {
                 *self = Self::from_num_checked(self.as_num() + rhs);
             }
         }
 
-        impl std::ops::AddAssign<&$helper> for $source {
+        impl core::ops::AddAssign<&$helper> for $source {
             fn add_assign(&mut self, rhs: &$helper) {
                 *self = Self::from_num_checked(self.as_num() + rhs);
             }
         }
 
-        impl std::ops::BitAnd for $source {
+        impl core::ops::BitAnd for $source {
             type Output = Self;
 
             fn bitand(self, rhs: Self) -> Self::Output {
@@ -208,7 +208,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitAnd<$source> for &$source {
+        impl core::ops::BitAnd<$source> for &$source {
             type Output = $source;
 
             fn bitand(self, rhs: $source) -> $source {
@@ -216,14 +216,14 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitAnd<&$source> for &$source {
+        impl core::ops::BitAnd<&$source> for &$source {
             type Output = $source;
             fn bitand(self, rhs: &$source) -> $source {
                 <$source>::from_num(self.as_num() & rhs.as_num())
             }
         }
 
-        impl std::ops::BitAnd<$helper> for &$source {
+        impl core::ops::BitAnd<$helper> for &$source {
             type Output = $source;
 
             fn bitand(self, rhs: $helper) -> $source {
@@ -231,7 +231,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitAnd<&$helper> for &$source {
+        impl core::ops::BitAnd<&$helper> for &$source {
             type Output = $source;
 
             fn bitand(self, rhs: &$helper) -> $source {
@@ -239,7 +239,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitAnd<&$source> for $source {
+        impl core::ops::BitAnd<&$source> for $source {
             type Output = Self;
 
             fn bitand(self, rhs: &Self) -> Self::Output {
@@ -247,7 +247,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitAnd<$helper> for $source {
+        impl core::ops::BitAnd<$helper> for $source {
             type Output = Self;
 
             fn bitand(self, rhs: $helper) -> Self::Output {
@@ -255,7 +255,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitAnd<&$helper> for $source {
+        impl core::ops::BitAnd<&$helper> for $source {
             type Output = Self;
 
             fn bitand(self, rhs: &$helper) -> Self::Output {
@@ -263,31 +263,31 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitAndAssign for $source {
+        impl core::ops::BitAndAssign for $source {
             fn bitand_assign(&mut self, rhs: Self) {
                 *self = Self::from_num(self.as_num() & rhs.as_num())
             }
         }
 
-        impl std::ops::BitAndAssign<&$source> for $source {
+        impl core::ops::BitAndAssign<&$source> for $source {
             fn bitand_assign(&mut self, rhs: &Self) {
                 *self = Self::from_num(self.as_num() & rhs.as_num())
             }
         }
 
-        impl std::ops::BitAndAssign<$helper> for $source {
+        impl core::ops::BitAndAssign<$helper> for $source {
             fn bitand_assign(&mut self, rhs: $helper) {
                 *self = Self::from_num(self.as_num() & rhs)
             }
         }
 
-        impl std::ops::BitAndAssign<&$helper> for $source {
+        impl core::ops::BitAndAssign<&$helper> for $source {
             fn bitand_assign(&mut self, rhs: &$helper) {
                 *self = Self::from_num(self.as_num() & rhs)
             }
         }
 
-        impl std::ops::BitOr for $source {
+        impl core::ops::BitOr for $source {
             type Output = Self;
 
             fn bitor(self, rhs: Self) -> Self::Output {
@@ -295,7 +295,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitOr<$source> for &$source {
+        impl core::ops::BitOr<$source> for &$source {
             type Output = $source;
 
             fn bitor(self, rhs: $source) -> $source {
@@ -303,14 +303,14 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitOr<&$source> for &$source {
+        impl core::ops::BitOr<&$source> for &$source {
             type Output = $source;
             fn bitor(self, rhs: &$source) -> $source {
                 <$source>::from_num(self.as_num() | rhs.as_num())
             }
         }
 
-        impl std::ops::BitOr<$helper> for &$source {
+        impl core::ops::BitOr<$helper> for &$source {
             type Output = $source;
 
             fn bitor(self, rhs: $helper) -> $source {
@@ -318,7 +318,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitOr<&$helper> for &$source {
+        impl core::ops::BitOr<&$helper> for &$source {
             type Output = $source;
 
             fn bitor(self, rhs: &$helper) -> $source {
@@ -326,7 +326,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitOr<&$source> for $source {
+        impl core::ops::BitOr<&$source> for $source {
             type Output = Self;
 
             fn bitor(self, rhs: &Self) -> Self::Output {
@@ -334,7 +334,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitOr<$helper> for $source {
+        impl core::ops::BitOr<$helper> for $source {
             type Output = Self;
 
             fn bitor(self, rhs: $helper) -> Self::Output {
@@ -342,7 +342,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitOr<&$helper> for $source {
+        impl core::ops::BitOr<&$helper> for $source {
             type Output = Self;
 
             fn bitor(self, rhs: &$helper) -> Self::Output {
@@ -350,31 +350,31 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitOrAssign for $source {
+        impl core::ops::BitOrAssign for $source {
             fn bitor_assign(&mut self, rhs: Self) {
                 *self = Self::from_num(self.as_num() | rhs.as_num())
             }
         }
 
-        impl std::ops::BitOrAssign<&$source> for $source {
+        impl core::ops::BitOrAssign<&$source> for $source {
             fn bitor_assign(&mut self, rhs: &Self) {
                 *self = Self::from_num(self.as_num() | rhs.as_num())
             }
         }
 
-        impl std::ops::BitOrAssign<$helper> for $source {
+        impl core::ops::BitOrAssign<$helper> for $source {
             fn bitor_assign(&mut self, rhs: $helper) {
                 *self = Self::from_num_checked(self.as_num() | rhs)
             }
         }
 
-        impl std::ops::BitOrAssign<&$helper> for $source {
+        impl core::ops::BitOrAssign<&$helper> for $source {
             fn bitor_assign(&mut self, rhs: &$helper) {
                 *self = Self::from_num_checked(self.as_num() | rhs)
             }
         }
 
-        impl std::ops::BitXor for $source {
+        impl core::ops::BitXor for $source {
             type Output = Self;
 
             fn bitxor(self, rhs: Self) -> Self::Output {
@@ -382,7 +382,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitXor<$source> for &$source {
+        impl core::ops::BitXor<$source> for &$source {
             type Output = $source;
 
             fn bitxor(self, rhs: $source) -> $source {
@@ -390,14 +390,14 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitXor<&$source> for &$source {
+        impl core::ops::BitXor<&$source> for &$source {
             type Output = $source;
             fn bitxor(self, rhs: &$source) -> $source {
                 <$source>::from_num(self.as_num() ^ rhs.as_num())
             }
         }
 
-        impl std::ops::BitXor<$helper> for &$source {
+        impl core::ops::BitXor<$helper> for &$source {
             type Output = $source;
 
             fn bitxor(self, rhs: $helper) -> $source {
@@ -405,7 +405,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitXor<&$helper> for &$source {
+        impl core::ops::BitXor<&$helper> for &$source {
             type Output = $source;
 
             fn bitxor(self, rhs: &$helper) -> $source {
@@ -413,7 +413,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitXor<&$source> for $source {
+        impl core::ops::BitXor<&$source> for $source {
             type Output = Self;
 
             fn bitxor(self, rhs: &Self) -> Self::Output {
@@ -421,7 +421,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitXor<$helper> for $source {
+        impl core::ops::BitXor<$helper> for $source {
             type Output = Self;
 
             fn bitxor(self, rhs: $helper) -> Self::Output {
@@ -429,7 +429,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitXor<&$helper> for $source {
+        impl core::ops::BitXor<&$helper> for $source {
             type Output = Self;
 
             fn bitxor(self, rhs: &$helper) -> Self::Output {
@@ -437,31 +437,31 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::BitXorAssign for $source {
+        impl core::ops::BitXorAssign for $source {
             fn bitxor_assign(&mut self, rhs: Self) {
                 *self = Self::from_num(self.as_num() ^ rhs.as_num())
             }
         }
 
-        impl std::ops::BitXorAssign<&$source> for $source {
+        impl core::ops::BitXorAssign<&$source> for $source {
             fn bitxor_assign(&mut self, rhs: &Self) {
                 *self = Self::from_num(self.as_num() ^ rhs.as_num())
             }
         }
 
-        impl std::ops::BitXorAssign<$helper> for $source {
+        impl core::ops::BitXorAssign<$helper> for $source {
             fn bitxor_assign(&mut self, rhs: $helper) {
                 *self = Self::from_num_checked(self.as_num() ^ rhs)
             }
         }
 
-        impl std::ops::BitXorAssign<&$helper> for $source {
+        impl core::ops::BitXorAssign<&$helper> for $source {
             fn bitxor_assign(&mut self, rhs: &$helper) {
                 *self = Self::from_num_checked(self.as_num() ^ rhs)
             }
         }
 
-        impl std::ops::Sub for $source {
+        impl core::ops::Sub for $source {
             type Output = Self;
 
             fn sub(self, rhs: Self) -> Self {
@@ -469,7 +469,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Sub<$source> for &$source {
+        impl core::ops::Sub<$source> for &$source {
             type Output = $source;
 
             fn sub(self, rhs: $source) -> $source {
@@ -477,14 +477,14 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Sub<&$source> for &$source {
+        impl core::ops::Sub<&$source> for &$source {
             type Output = $source;
             fn sub(self, rhs: &$source) -> $source {
                 <$source>::from_num(self.as_num() - rhs.as_num())
             }
         }
 
-        impl std::ops::Sub<$helper> for &$source {
+        impl core::ops::Sub<$helper> for &$source {
             type Output = $source;
 
             fn sub(self, rhs: $helper) -> $source {
@@ -492,7 +492,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Sub<&$helper> for &$source {
+        impl core::ops::Sub<&$helper> for &$source {
             type Output = $source;
 
             fn sub(self, rhs: &$helper) -> $source {
@@ -500,7 +500,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Sub<&$source> for $source {
+        impl core::ops::Sub<&$source> for $source {
             type Output = Self;
 
             fn sub(self, rhs: &Self) -> Self {
@@ -508,7 +508,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Sub<$helper> for $source {
+        impl core::ops::Sub<$helper> for $source {
             type Output = Self;
 
             fn sub(self, rhs: $helper) -> Self {
@@ -516,7 +516,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Sub<&$helper> for $source {
+        impl core::ops::Sub<&$helper> for $source {
             type Output = Self;
 
             fn sub(self, rhs: &$helper) -> Self {
@@ -524,31 +524,31 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::SubAssign for $source {
+        impl core::ops::SubAssign for $source {
             fn sub_assign(&mut self, rhs: Self) {
                 *self = Self::from_num(self.as_num() - rhs.as_num());
             }
         }
 
-        impl std::ops::SubAssign<&$source> for $source {
+        impl core::ops::SubAssign<&$source> for $source {
             fn sub_assign(&mut self, rhs: &Self) {
                 *self = Self::from_num(self.as_num() - rhs.as_num());
             }
         }
 
-        impl std::ops::SubAssign<$helper> for $source {
+        impl core::ops::SubAssign<$helper> for $source {
             fn sub_assign(&mut self, rhs: $helper) {
                 *self = Self::from_num(self.as_num() - rhs);
             }
         }
 
-        impl std::ops::SubAssign<&$helper> for $source {
+        impl core::ops::SubAssign<&$helper> for $source {
             fn sub_assign(&mut self, rhs: &$helper) {
                 *self = Self::from_num(self.as_num() - rhs);
             }
         }
 
-        impl std::ops::Mul for $source {
+        impl core::ops::Mul for $source {
             type Output = Self;
 
             fn mul(self, rhs: Self) -> Self {
@@ -556,7 +556,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Mul<$source> for &$source {
+        impl core::ops::Mul<$source> for &$source {
             type Output = $source;
 
             fn mul(self, rhs: $source) -> $source {
@@ -564,14 +564,14 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Mul<&$source> for &$source {
+        impl core::ops::Mul<&$source> for &$source {
             type Output = $source;
             fn mul(self, rhs: &$source) -> $source {
                 <$source>::from_num_checked(self.as_num() * rhs.as_num())
             }
         }
 
-        impl std::ops::Mul<$helper> for &$source {
+        impl core::ops::Mul<$helper> for &$source {
             type Output = $source;
 
             fn mul(self, rhs: $helper) -> $source {
@@ -579,7 +579,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Mul<&$helper> for &$source {
+        impl core::ops::Mul<&$helper> for &$source {
             type Output = $source;
 
             fn mul(self, rhs: &$helper) -> $source {
@@ -587,7 +587,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Mul<&$source> for $source {
+        impl core::ops::Mul<&$source> for $source {
             type Output = Self;
 
             fn mul(self, rhs: &Self) -> Self {
@@ -595,7 +595,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Mul<$helper> for $source {
+        impl core::ops::Mul<$helper> for $source {
             type Output = Self;
 
             fn mul(self, rhs: $helper) -> Self {
@@ -603,7 +603,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Mul<&$helper> for $source {
+        impl core::ops::Mul<&$helper> for $source {
             type Output = Self;
 
             fn mul(self, rhs: &$helper) -> Self {
@@ -611,31 +611,31 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::MulAssign for $source {
+        impl core::ops::MulAssign for $source {
             fn mul_assign(&mut self, rhs: Self) {
                 *self = Self::from_num_checked(self.as_num() * rhs.as_num());
             }
         }
 
-        impl std::ops::MulAssign<&$source> for $source {
+        impl core::ops::MulAssign<&$source> for $source {
             fn mul_assign(&mut self, rhs: &Self) {
                 *self = Self::from_num_checked(self.as_num() * rhs.as_num());
             }
         }
 
-        impl std::ops::MulAssign<$helper> for $source {
+        impl core::ops::MulAssign<$helper> for $source {
             fn mul_assign(&mut self, rhs: $helper) {
                 *self = Self::from_num_checked(self.as_num() * rhs);
             }
         }
 
-        impl std::ops::MulAssign<&$helper> for $source {
+        impl core::ops::MulAssign<&$helper> for $source {
             fn mul_assign(&mut self, rhs: &$helper) {
                 *self = Self::from_num_checked(self.as_num() * rhs);
             }
         }
 
-        impl std::ops::Div for $source {
+        impl core::ops::Div for $source {
             type Output = Self;
 
             fn div(self, rhs: Self) -> Self {
@@ -643,7 +643,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Div<$source> for &$source {
+        impl core::ops::Div<$source> for &$source {
             type Output = $source;
 
             fn div(self, rhs: $source) -> $source {
@@ -651,14 +651,14 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Div<&$source> for &$source {
+        impl core::ops::Div<&$source> for &$source {
             type Output = $source;
             fn div(self, rhs: &$source) -> $source {
                 <$source>::from_num(self.as_num() / rhs.as_num())
             }
         }
 
-        impl std::ops::Div<$helper> for &$source {
+        impl core::ops::Div<$helper> for &$source {
             type Output = $source;
 
             fn div(self, rhs: $helper) -> $source {
@@ -666,7 +666,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Div<&$helper> for &$source {
+        impl core::ops::Div<&$helper> for &$source {
             type Output = $source;
 
             fn div(self, rhs: &$helper) -> $source {
@@ -674,7 +674,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Div<&$source> for $source {
+        impl core::ops::Div<&$source> for $source {
             type Output = Self;
 
             fn div(self, rhs: &Self) -> Self {
@@ -682,7 +682,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Div<$helper> for $source {
+        impl core::ops::Div<$helper> for $source {
             type Output = Self;
 
             fn div(self, rhs: $helper) -> Self {
@@ -690,7 +690,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Div<&$helper> for $source {
+        impl core::ops::Div<&$helper> for $source {
             type Output = Self;
 
             fn div(self, rhs: &$helper) -> Self {
@@ -698,31 +698,31 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::DivAssign for $source {
+        impl core::ops::DivAssign for $source {
             fn div_assign(&mut self, rhs: Self) {
                 *self = Self::from_num(self.as_num() / rhs.as_num());
             }
         }
 
-        impl std::ops::DivAssign<&$source> for $source {
+        impl core::ops::DivAssign<&$source> for $source {
             fn div_assign(&mut self, rhs: &Self) {
                 *self = Self::from_num(self.as_num() / rhs.as_num());
             }
         }
 
-        impl std::ops::DivAssign<$helper> for $source {
+        impl core::ops::DivAssign<$helper> for $source {
             fn div_assign(&mut self, rhs: $helper) {
                 *self = Self::from_num(self.as_num() / rhs);
             }
         }
 
-        impl std::ops::DivAssign<&$helper> for $source {
+        impl core::ops::DivAssign<&$helper> for $source {
             fn div_assign(&mut self, rhs: &$helper) {
                 *self = Self::from_num(self.as_num() / rhs);
             }
         }
 
-        impl std::ops::Rem for $source {
+        impl core::ops::Rem for $source {
             type Output = Self;
 
             fn rem(self, rhs: Self) -> Self::Output {
@@ -730,7 +730,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Rem<$source> for &$source {
+        impl core::ops::Rem<$source> for &$source {
             type Output = $source;
 
             fn rem(self, rhs: $source) -> $source {
@@ -738,14 +738,14 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Rem<&$source> for &$source {
+        impl core::ops::Rem<&$source> for &$source {
             type Output = $source;
             fn rem(self, rhs: &$source) -> $source {
                 <$source>::from_num(self.as_num() % rhs.as_num())
             }
         }
 
-        impl std::ops::Rem<$helper> for &$source {
+        impl core::ops::Rem<$helper> for &$source {
             type Output = $source;
 
             fn rem(self, rhs: $helper) -> $source {
@@ -753,7 +753,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Rem<&$helper> for &$source {
+        impl core::ops::Rem<&$helper> for &$source {
             type Output = $source;
 
             fn rem(self, rhs: &$helper) -> $source {
@@ -761,7 +761,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Rem<&$source> for $source {
+        impl core::ops::Rem<&$source> for $source {
             type Output = Self;
 
             fn rem(self, rhs: &Self) -> Self {
@@ -769,7 +769,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Rem<$helper> for $source {
+        impl core::ops::Rem<$helper> for $source {
             type Output = Self;
 
             fn rem(self, rhs: $helper) -> Self {
@@ -777,7 +777,7 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::Rem<&$helper> for $source {
+        impl core::ops::Rem<&$helper> for $source {
             type Output = Self;
 
             fn rem(self, rhs: &$helper) -> Self {
@@ -785,25 +785,25 @@ macro_rules! common_traits_impl {
             }
         }
 
-        impl std::ops::RemAssign for $source {
+        impl core::ops::RemAssign for $source {
             fn rem_assign(&mut self, rhs: Self) {
                 *self = Self::from_num(self.as_num() % rhs.as_num());
             }
         }
 
-        impl std::ops::RemAssign<&$source> for $source {
+        impl core::ops::RemAssign<&$source> for $source {
             fn rem_assign(&mut self, rhs: &Self) {
                 *self = Self::from_num(self.as_num() % rhs.as_num());
             }
         }
 
-        impl std::ops::RemAssign<$helper> for $source {
+        impl core::ops::RemAssign<$helper> for $source {
             fn rem_assign(&mut self, rhs: $helper) {
                 *self = Self::from_num(self.as_num() % rhs);
             }
         }
 
-        impl std::ops::RemAssign<&$helper> for $source {
+        impl core::ops::RemAssign<&$helper> for $source {
             fn rem_assign(&mut self, rhs: &$helper) {
                 *self = Self::from_num(self.as_num() % rhs);
             }
@@ -1120,7 +1120,7 @@ macro_rules! common_fn_impl {
         /// Parses a string returning a error if the number cannot be parsed or is too large for the type.
         ///
         #[inline]
-        pub fn from_str_radix(src: &str, radix: u32) -> Result<Self, std::num::ParseIntError> {
+        pub fn from_str_radix(src: &str, radix: u32) -> Result<Self, core::num::ParseIntError> {
             let r = <$helper>::from_str_radix(src, radix)?;
             if r > Self::MAX_VALUE {
                 //Pain
@@ -2269,7 +2269,7 @@ macro_rules! num_traits_impl {
         }
 
         impl num_traits::Num for $source {
-            type FromStrRadixErr = std::num::ParseIntError;
+            type FromStrRadixErr = core::num::ParseIntError;
 
             fn from_str_radix(str: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
                 return Self::from_str_radix(str, radix);
@@ -2530,6 +2530,7 @@ macro_rules! ux_conversion_via_format {
             }
         }
 
+        #[cfg(feature = "std")]
         impl From<$ux_type> for $uintx_type {
             fn from(value: $ux_type) -> Self {
                 let x: $intermediary =
@@ -2539,6 +2540,7 @@ macro_rules! ux_conversion_via_format {
             }
         }
 
+        #[cfg(feature = "std")]
         impl From<&$ux_type> for $uintx_type {
             fn from(value: &$ux_type) -> Self {
                 let x: $intermediary =
@@ -2548,6 +2550,7 @@ macro_rules! ux_conversion_via_format {
             }
         }
 
+        #[cfg(feature = "std")]
         impl From<&$ux_type_signed> for $uintx_type {
             fn from(value: &$ux_type_signed) -> Self {
                 let x: $intermediary_signed =
@@ -2557,6 +2560,7 @@ macro_rules! ux_conversion_via_format {
             }
         }
 
+        #[cfg(feature = "std")]
         impl From<$ux_type_signed> for $uintx_type {
             fn from(value: $ux_type_signed) -> Self {
                 let x: $intermediary_signed =
@@ -2736,7 +2740,7 @@ macro_rules! from_to_impl_for_primitive {
 #[doc(hidden)]
 macro_rules! sh_impl_conv {
     ($lhs:ty, $rhs:ty) => {
-        impl std::ops::Shl<$rhs> for $lhs {
+        impl core::ops::Shl<$rhs> for $lhs {
             type Output = $lhs;
 
             fn shl(self, rhs: $rhs) -> Self::Output {
@@ -2744,7 +2748,7 @@ macro_rules! sh_impl_conv {
             }
         }
 
-        impl std::ops::Shl<&$rhs> for $lhs {
+        impl core::ops::Shl<&$rhs> for $lhs {
             type Output = $lhs;
 
             fn shl(self, rhs: &$rhs) -> Self::Output {
@@ -2752,19 +2756,19 @@ macro_rules! sh_impl_conv {
             }
         }
 
-        impl std::ops::ShlAssign<$rhs> for $lhs {
+        impl core::ops::ShlAssign<$rhs> for $lhs {
             fn shl_assign(&mut self, rhs: $rhs) {
                 *self = Self::from_num(self.as_num() << rhs.as_num());
             }
         }
 
-        impl std::ops::ShlAssign<&$rhs> for $lhs {
+        impl core::ops::ShlAssign<&$rhs> for $lhs {
             fn shl_assign(&mut self, rhs: &$rhs) {
                 *self = Self::from_num(self.as_num() << rhs.as_num());
             }
         }
 
-        impl std::ops::Shr<$rhs> for $lhs {
+        impl core::ops::Shr<$rhs> for $lhs {
             type Output = $lhs;
 
             fn shr(self, rhs: $rhs) -> Self::Output {
@@ -2772,7 +2776,7 @@ macro_rules! sh_impl_conv {
             }
         }
 
-        impl std::ops::Shr<&$rhs> for $lhs {
+        impl core::ops::Shr<&$rhs> for $lhs {
             type Output = $lhs;
 
             fn shr(self, rhs: &$rhs) -> Self::Output {
@@ -2780,13 +2784,13 @@ macro_rules! sh_impl_conv {
             }
         }
 
-        impl std::ops::ShrAssign<$rhs> for $lhs {
+        impl core::ops::ShrAssign<$rhs> for $lhs {
             fn shr_assign(&mut self, rhs: $rhs) {
                 *self = Self::from_num(self.as_num() >> rhs.as_num());
             }
         }
 
-        impl std::ops::ShrAssign<&$rhs> for $lhs {
+        impl core::ops::ShrAssign<&$rhs> for $lhs {
             fn shr_assign(&mut self, rhs: &$rhs) {
                 *self = Self::from_num(self.as_num() >> rhs.as_num());
             }
@@ -2798,7 +2802,7 @@ macro_rules! sh_impl_conv {
 #[doc(hidden)]
 macro_rules! sh_impl {
     ($lhs:ty, $rhs:ty) => {
-        impl std::ops::Shl<$rhs> for $lhs {
+        impl core::ops::Shl<$rhs> for $lhs {
             type Output = $lhs;
 
             fn shl(self, rhs: $rhs) -> Self::Output {
@@ -2806,7 +2810,7 @@ macro_rules! sh_impl {
             }
         }
 
-        impl std::ops::Shl<&$rhs> for $lhs {
+        impl core::ops::Shl<&$rhs> for $lhs {
             type Output = $lhs;
 
             fn shl(self, rhs: &$rhs) -> Self::Output {
@@ -2814,19 +2818,19 @@ macro_rules! sh_impl {
             }
         }
 
-        impl std::ops::ShlAssign<$rhs> for $lhs {
+        impl core::ops::ShlAssign<$rhs> for $lhs {
             fn shl_assign(&mut self, rhs: $rhs) {
                 *self = Self::from_num(self.as_num() << rhs);
             }
         }
 
-        impl std::ops::ShlAssign<&$rhs> for $lhs {
+        impl core::ops::ShlAssign<&$rhs> for $lhs {
             fn shl_assign(&mut self, rhs: &$rhs) {
                 *self = Self::from_num(self.as_num() << rhs);
             }
         }
 
-        impl std::ops::Shr<$rhs> for $lhs {
+        impl core::ops::Shr<$rhs> for $lhs {
             type Output = $lhs;
 
             fn shr(self, rhs: $rhs) -> Self::Output {
@@ -2834,7 +2838,7 @@ macro_rules! sh_impl {
             }
         }
 
-        impl std::ops::Shr<&$rhs> for $lhs {
+        impl core::ops::Shr<&$rhs> for $lhs {
             type Output = $lhs;
 
             fn shr(self, rhs: &$rhs) -> Self::Output {
@@ -2842,13 +2846,13 @@ macro_rules! sh_impl {
             }
         }
 
-        impl std::ops::ShrAssign<$rhs> for $lhs {
+        impl core::ops::ShrAssign<$rhs> for $lhs {
             fn shr_assign(&mut self, rhs: $rhs) {
                 *self = Self::from_num(self.as_num() >> rhs);
             }
         }
 
-        impl std::ops::ShrAssign<&$rhs> for $lhs {
+        impl core::ops::ShrAssign<&$rhs> for $lhs {
             fn shr_assign(&mut self, rhs: &$rhs) {
                 *self = Self::from_num(self.as_num() >> rhs);
             }
@@ -2881,7 +2885,7 @@ macro_rules! type_impl {
             /// Amount of bits missing for the type to have the same size as the next larger algined integer type.
             ///
             pub const NUM_BITS_MISSING_FOR_ALIGNMENT: usize =
-                (std::mem::size_of::<$helper>() - $size) * 8;
+                (core::mem::size_of::<$helper>() - $size) * 8;
 
             crate::common_fn_impl!($source, $helper, $size);
 
